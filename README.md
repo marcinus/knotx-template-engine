@@ -1,1 +1,1 @@
-# knotx-templating-engine
+# Knotx Template Engine
