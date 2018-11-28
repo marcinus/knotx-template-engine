@@ -1,0 +1,6 @@
+<script
+  data-knotx-knots="te"
+  te-strategy="customStrategy"
+  type="text/knotx-snippet">
+  <h2>test</h2>
+</script>

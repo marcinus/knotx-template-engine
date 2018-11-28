@@ -21,12 +21,10 @@ compileJava.dependsOn annotationProcessing
 dependencies {
   compileOnly project(':knotx-template-engine-api')
   compileOnly project(':knotx-template-engine-core')
-  compileOnly project(':knotx-template-engine-handlebars')
   compileOnly "io.vertx:vertx-web-client"
 
   testCompile project(':knotx-template-engine-api')
   testCompile project(':knotx-template-engine-core')
-  testCompile project(':knotx-template-engine-handlebars')
   testCompile "io.vertx:vertx-web-client"
 }
 
