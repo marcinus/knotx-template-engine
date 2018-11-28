@@ -13,13 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@ModuleGen(name = "knotx-te-handlebars", groupPackage = "io.knotx")
+package io.knotx.te.handlebars;
 
-description = "Knot.x Template Engine Core"
-
-compileJava.dependsOn annotationProcessing
-
-dependencies {
-    compileOnly project(':knotx-template-engine-api')
-    testCompile project(':knotx-template-engine-api')
-    testCompileOnly group: 'io.knotx', name: 'knotx-core', version: '1.5.0-SNAPSHOT', classifier: 'tests'
-}
+import io.vertx.codegen.annotations.ModuleGen;

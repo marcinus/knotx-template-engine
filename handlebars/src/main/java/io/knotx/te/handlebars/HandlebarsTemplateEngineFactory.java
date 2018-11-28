@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.knotx.te.handlebars;
 
-description = "Knot.x Template Engine Core"
+import io.knotx.te.api.TemplateEngine;
+import io.knotx.te.api.TemplateEngineFactory;
+import io.vertx.core.json.JsonObject;
+import io.vertx.reactivex.core.Vertx;
 
-compileJava.dependsOn annotationProcessing
+public class HandlebarsTemplateEngineFactory implements TemplateEngineFactory {
 
-dependencies {
-    compileOnly project(':knotx-template-engine-api')
-    testCompile project(':knotx-template-engine-api')
-    testCompileOnly group: 'io.knotx', name: 'knotx-core', version: '1.5.0-SNAPSHOT', classifier: 'tests'
+  @Override
+  public String getName() {
+    return "handlebars";
+  }
+
+  @Override
+  public TemplateEngine create(Vertx vertx, JsonObject config) {
+    return new HandlebarsTemplateEngine(vertx, new HandlebarsEngineOptions(config));
+  }
 }

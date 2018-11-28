@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Cognifide Limited
+ * Copyright (C) 2018 Knot.x Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.knotx.knot.templating;
+package io.knotx.te.handlebars;
 
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
@@ -22,7 +22,7 @@ import io.vertx.core.json.JsonObject;
  * Describes Handlebars Knot configuration
  */
 @DataObject(generateConverter = true, publicConverter = false)
-public class HandlebarsKnotOptions {
+public class HandlebarsEngineOptions {
 
   /**
    * Default key hash algorithm = MD5
@@ -47,7 +47,7 @@ public class HandlebarsKnotOptions {
   /**
    * Default constructor
    */
-  public HandlebarsKnotOptions() {
+  public HandlebarsEngineOptions() {
     init();
   }
 
@@ -56,7 +56,7 @@ public class HandlebarsKnotOptions {
    *
    * @param other the instance to copy
    */
-  public HandlebarsKnotOptions(HandlebarsKnotOptions other) {
+  public HandlebarsEngineOptions(HandlebarsEngineOptions other) {
     this.address = other.address;
     this.cacheKeyAlgorithm = other.cacheKeyAlgorithm;
     this.cacheSize = other.cacheSize;
@@ -69,9 +69,9 @@ public class HandlebarsKnotOptions {
    *
    * @param json the JSON
    */
-  public HandlebarsKnotOptions(JsonObject json) {
+  public HandlebarsEngineOptions(JsonObject json) {
     init();
-    HandlebarsKnotOptionsConverter.fromJson(json, this);
+    HandlebarsEngineOptionsConverter.fromJson(json, this);
   }
 
   /**
@@ -81,7 +81,7 @@ public class HandlebarsKnotOptions {
    */
   public JsonObject toJson() {
     JsonObject json = new JsonObject();
-    HandlebarsKnotOptionsConverter.toJson(this, json);
+    HandlebarsEngineOptionsConverter.toJson(this, json);
     return json;
   }
 
@@ -105,7 +105,7 @@ public class HandlebarsKnotOptions {
    * @param cacheSize size of the cache
    * @return a reference to this, so the API can be used fluently
    */
-  HandlebarsKnotOptions setCacheSize(Long cacheSize) {
+  HandlebarsEngineOptions setCacheSize(Long cacheSize) {
     this.cacheSize = cacheSize;
     return this;
   }
@@ -126,7 +126,7 @@ public class HandlebarsKnotOptions {
    * @param cacheKeyAlgorithm algorithm name
    * @return a reference to this, so the API can be used fluently
    */
-  HandlebarsKnotOptions setCacheKeyAlgorithm(String cacheKeyAlgorithm) {
+  HandlebarsEngineOptions setCacheKeyAlgorithm(String cacheKeyAlgorithm) {
     this.cacheKeyAlgorithm = cacheKeyAlgorithm;
     return this;
   }
@@ -144,7 +144,7 @@ public class HandlebarsKnotOptions {
    * @param address EB address of the verticle
    * @return a reference to this, so the API can be used fluently
    */
-  HandlebarsKnotOptions setAddress(String address) {
+  HandlebarsEngineOptions setAddress(String address) {
     this.address = address;
     return this;
   }
@@ -153,7 +153,7 @@ public class HandlebarsKnotOptions {
     return startDelimiter;
   }
 
-  HandlebarsKnotOptions setStartDelimiter(String startDelimiter) {
+  HandlebarsEngineOptions setStartDelimiter(String startDelimiter) {
     this.startDelimiter = startDelimiter;
     return this;
   }
@@ -162,7 +162,7 @@ public class HandlebarsKnotOptions {
     return endDelimiter;
   }
 
-  HandlebarsKnotOptions setEndDelimiter(String endDelimiter) {
+  HandlebarsEngineOptions setEndDelimiter(String endDelimiter) {
     this.endDelimiter = endDelimiter;
     return this;
   }

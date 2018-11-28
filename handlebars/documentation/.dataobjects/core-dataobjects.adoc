@@ -1,0 +1,23 @@
+[[HandlebarsEngineOptions]]
+== HandlebarsEngineOptions
+
+++++
+ Describes Handlebars Knot configuration
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[cacheKeyAlgorithm]]`cacheKeyAlgorithm`|`String`|
++++
+
++++
+|[[cacheSize]]`cacheSize`|`Number (Long)`|
++++
+
++++
+|[[endDelimiter]]`endDelimiter`|`String`|-
+|[[startDelimiter]]`startDelimiter`|`String`|-
+|===

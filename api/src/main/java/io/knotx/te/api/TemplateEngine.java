@@ -13,13 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.knotx.te.api;
 
-description = "Knot.x Template Engine Core"
+import io.knotx.dataobjects.Fragment;
 
-compileJava.dependsOn annotationProcessing
+/**
+ * Represents template engine that process fragments in order to merge dynamic data with template.
+ */
+public interface TemplateEngine {
 
-dependencies {
-    compileOnly project(':knotx-template-engine-api')
-    testCompile project(':knotx-template-engine-api')
-    testCompileOnly group: 'io.knotx', name: 'knotx-core', version: '1.5.0-SNAPSHOT', classifier: 'tests'
+  /**
+   * Runs template engine over fragment in order to ingest dynamic data into snippet.
+   * @param fragment - a fragment to process.
+   * @return evaluated fragment markup.
+   */
+  String process(Fragment fragment);
+
 }

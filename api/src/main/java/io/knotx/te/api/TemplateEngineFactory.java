@@ -13,13 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.knotx.te.api;
 
-description = "Knot.x Template Engine Core"
+import io.vertx.core.json.JsonObject;
+import io.vertx.reactivex.core.Vertx;
 
-compileJava.dependsOn annotationProcessing
+/**
+ * Defines factory object that provides handler instance with the particular name.
+ */
+public interface TemplateEngineFactory {
 
-dependencies {
-    compileOnly project(':knotx-template-engine-api')
-    testCompile project(':knotx-template-engine-api')
-    testCompileOnly group: 'io.knotx', name: 'knotx-core', version: '1.5.0-SNAPSHOT', classifier: 'tests'
+  /**
+   * The handler name that is used in operations configuration.
+   * @return the handler name
+   */
+  String getName();
+
+  /**
+   * Creates template engine instance.
+   * @param vertx vertx instance
+   * @param config handler configuration
+   * @return handler instance
+   */
+  TemplateEngine create(Vertx vertx, JsonObject config);
+
 }
