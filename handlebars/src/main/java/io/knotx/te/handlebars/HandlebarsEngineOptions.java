@@ -33,12 +33,6 @@ public class HandlebarsEngineOptions {
 
   private static final String DEFAULT_END_DELIMITER = "}}";
 
-  /**
-   * Default EB address of the verticle
-   */
-  private static final String DEFAULT_ADDRESS = "knotx.knot.handlebars";
-
-  private String address;
   private String cacheKeyAlgorithm;
   private Long cacheSize;
   private String startDelimiter;
@@ -57,7 +51,6 @@ public class HandlebarsEngineOptions {
    * @param other the instance to copy
    */
   public HandlebarsEngineOptions(HandlebarsEngineOptions other) {
-    this.address = other.address;
     this.cacheKeyAlgorithm = other.cacheKeyAlgorithm;
     this.cacheSize = other.cacheSize;
     this.startDelimiter = other.startDelimiter;
@@ -86,7 +79,6 @@ public class HandlebarsEngineOptions {
   }
 
   private void init() {
-    address = DEFAULT_ADDRESS;
     cacheKeyAlgorithm = DEFAULT_CACHE_KEY_ALGORITHM;
     startDelimiter = DEFAULT_START_DELIMITER;
     endDelimiter = DEFAULT_END_DELIMITER;
@@ -128,24 +120,6 @@ public class HandlebarsEngineOptions {
    */
   public HandlebarsEngineOptions setCacheKeyAlgorithm(String cacheKeyAlgorithm) {
     this.cacheKeyAlgorithm = cacheKeyAlgorithm;
-    return this;
-  }
-
-  /**
-   * @return EB address
-   */
-  public String getAddress() {
-    return address;
-  }
-
-  /**
-   * Sets the EB address of the verticle
-   *
-   * @param address EB address of the verticle
-   * @return a reference to this, so the API can be used fluently
-   */
-  public HandlebarsEngineOptions setAddress(String address) {
-    this.address = address;
     return this;
   }
 
