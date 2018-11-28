@@ -19,13 +19,9 @@ description = "Knot.x Template Engine Integration Tests"
 compileJava.dependsOn annotationProcessing
 
 dependencies {
-  compileOnly project(':knotx-template-engine-api')
-  compileOnly project(':knotx-template-engine-core')
-  compileOnly "io.vertx:vertx-web-client"
-
-  testCompile project(':knotx-template-engine-api')
-  testCompile project(':knotx-template-engine-core')
-  testCompile "io.vertx:vertx-web-client"
+  compile project(':knotx-template-engine-api')
+  compile project(':knotx-template-engine-core')
+  compile project(':knotx-template-engine-handlebars')
 }
 
 sourceSets {

@@ -18,8 +18,15 @@ description = "Knot.x Template Engine Core"
 
 compileJava.dependsOn annotationProcessing
 
+configurations {
+  testResources
+}
+
 dependencies {
-    compileOnly project(':knotx-template-engine-api')
-    testCompile project(':knotx-template-engine-api')
-    testCompileOnly group: 'io.knotx', name: 'knotx-core', version: '1.5.0-SNAPSHOT', classifier: 'tests'
+  compile project(':knotx-template-engine-api')
+
+  testCompile project(':knotx-template-engine-api')
+  testCompile group: 'io.knotx', name: 'knotx-core', version: "${project.version}", classifier: 'tests'
+
+  testResources sourceSets.test.output
 }

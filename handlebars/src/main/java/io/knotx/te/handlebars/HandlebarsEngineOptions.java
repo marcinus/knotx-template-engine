@@ -105,7 +105,7 @@ public class HandlebarsEngineOptions {
    * @param cacheSize size of the cache
    * @return a reference to this, so the API can be used fluently
    */
-  HandlebarsEngineOptions setCacheSize(Long cacheSize) {
+  public HandlebarsEngineOptions setCacheSize(Long cacheSize) {
     this.cacheSize = cacheSize;
     return this;
   }
@@ -126,7 +126,7 @@ public class HandlebarsEngineOptions {
    * @param cacheKeyAlgorithm algorithm name
    * @return a reference to this, so the API can be used fluently
    */
-  HandlebarsEngineOptions setCacheKeyAlgorithm(String cacheKeyAlgorithm) {
+  public HandlebarsEngineOptions setCacheKeyAlgorithm(String cacheKeyAlgorithm) {
     this.cacheKeyAlgorithm = cacheKeyAlgorithm;
     return this;
   }
@@ -134,7 +134,7 @@ public class HandlebarsEngineOptions {
   /**
    * @return EB address
    */
-  String getAddress() {
+  public String getAddress() {
     return address;
   }
 
@@ -144,7 +144,7 @@ public class HandlebarsEngineOptions {
    * @param address EB address of the verticle
    * @return a reference to this, so the API can be used fluently
    */
-  HandlebarsEngineOptions setAddress(String address) {
+  public HandlebarsEngineOptions setAddress(String address) {
     this.address = address;
     return this;
   }
@@ -153,7 +153,7 @@ public class HandlebarsEngineOptions {
     return startDelimiter;
   }
 
-  HandlebarsEngineOptions setStartDelimiter(String startDelimiter) {
+  public HandlebarsEngineOptions setStartDelimiter(String startDelimiter) {
     this.startDelimiter = startDelimiter;
     return this;
   }
@@ -162,7 +162,7 @@ public class HandlebarsEngineOptions {
     return endDelimiter;
   }
 
-  HandlebarsEngineOptions setEndDelimiter(String endDelimiter) {
+  public HandlebarsEngineOptions setEndDelimiter(String endDelimiter) {
     this.endDelimiter = endDelimiter;
     return this;
   }

@@ -20,6 +20,7 @@ import io.knotx.dataobjects.Fragment;
 import io.knotx.dataobjects.KnotContext;
 import io.knotx.knot.AbstractKnotProxy;
 import io.knotx.te.api.TemplateEngine;
+import io.knotx.te.core.exception.UnsupportedEngineException;
 import io.knotx.te.core.fragment.FragmentContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.reactivex.Observable;
@@ -55,10 +56,17 @@ public class TemplateEngineKnotProxy extends AbstractKnotProxy {
                 .map(fragment -> FragmentContext.from(fragment, options.getDefaultEngine()))
                 .map(
                     fragmentContext -> {
-                      fragmentContext.fragment().content(
-                          engines.get(fragmentContext.getStrategy())
-                              .process(fragmentContext.fragment()));
-                      return fragmentContext;
+                      final TemplateEngine templateEngine = engines
+                          .get(fragmentContext.getStrategy());
+                      if (templateEngine != null) {
+                        fragmentContext.fragment().content(
+                            templateEngine
+                                .process(fragmentContext.fragment()));
+                        return fragmentContext;
+                      } else {
+                        throw new UnsupportedEngineException(
+                            "No engine named '" + fragmentContext.getStrategy() + "' found.");
+                      }
                     })
                 .toList()
         ).orElse(Single.just(Collections.emptyList()))
