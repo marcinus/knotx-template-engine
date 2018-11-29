@@ -1,0 +1,46 @@
+[[TemplateEngineEntry]]
+== TemplateEngineEntry
+
+++++
+ Describes a details of template engine.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[config]]`config`|`Json object`|
++++
+Sets link implementation configuration.
++++
+|[[name]]`name`|`String`|
++++
+Sets link name
++++
+|===
+[[TemplateEngineKnotOptions]]
+== TemplateEngineKnotOptions
+
+++++
+ Describes Template Engine configuration
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[address]]`address`|`String`|
++++
+Sets the EB address of the verticle. Default is 'knotx.knot.te'
++++
+|[[defaultEngine]]`defaultEngine`|`String`|
++++
+Sets the default template engine name
++++
+|[[engines]]`engines`|`Array of link:cheatsheets.adoc#TemplateEngineEntry[TemplateEngineEntry]`|
++++
+Sets template engines entries.
++++
+|===

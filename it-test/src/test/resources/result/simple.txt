@@ -1,0 +1,2 @@
+  <h2>Message - Hello from integration test</h2>
+  <p>Info - This is for IT tests</p>

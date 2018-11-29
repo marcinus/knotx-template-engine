@@ -1,0 +1,7 @@
+{
+  "message": "Hello from integration test",
+  "body": {
+    "info": "This is for IT tests",
+    "secret": "Knot.x is awesome"
+  }
+}
