@@ -8,15 +8,17 @@ Template Engine filters [Fragments](https://github.com/Cognifide/knotx/wiki/Spli
 with data from Fragment Context (for example data from external services or form submission response)
 using chosen template engine strategy.
 
+> Please note that example below uses Handlebars to process the markup. Read more about it below.
+
 *Fragment Content*
 ```html
-<script data-knotx-knots="services,te" data-knotx-service="first-service" type="text/knotx-snippet">
+<knotx:snippet knots="services,te" databridge-name="first-service" type="text/knotx-snippet">
 <div class="col-md-4">
   <h2>Snippet1 - {{_result.message}}</h2>
   <div>Snippet1 - {{_result.body.a}}</div>
   <div>Success! Status code : {{_response.statusCode}}</div>
 </div>
-</script>
+</knotx:snippet>
 ```
 
 *Fragment Context*
