@@ -16,7 +16,9 @@ Sets link implementation configuration.
 +++
 |[[name]]`name`|`String`|
 +++
-Sets link name
+Sets the template engine name that identifies this strategy. This name must be exactly
+ the same as the TemplateEngineFactory returns. The name is later used in the Fragment Content
+ to define which template engine should process it. Must be unique.
 +++
 |===
 [[TemplateEngineKnotOptions]]
@@ -33,14 +35,15 @@ Sets link name
 ^|Name | Type ^| Description
 |[[address]]`address`|`String`|
 +++
-Sets the EB address of the verticle. Default is 'knotx.knot.te'
+Sets the EB address of the verticle. Default is `knotx.knot.te`
 +++
 |[[defaultEngine]]`defaultEngine`|`String`|
 +++
-Sets the default template engine name
+Sets the default template engine name. This template engine will be used every time no strategy
+ is defined in the Fragment Content.
 +++
 |[[engines]]`engines`|`Array of link:cheatsheets.adoc#TemplateEngineEntry[TemplateEngineEntry]`|
 +++
-Sets template engines entries.
+List of the Template Engine Entries. Each item contains definition of new Template Engine strategy.
 +++
 |===

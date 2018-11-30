@@ -87,7 +87,7 @@ public class TemplateEngineKnotOptions {
   }
 
   /**
-   * Sets the EB address of the verticle. Default is 'knotx.knot.te'
+   * Sets the EB address of the verticle. Default is `knotx.knot.te`
    *
    * @param address EB address of the verticle
    * @return a reference to this, so the API can be used fluently
@@ -105,7 +105,8 @@ public class TemplateEngineKnotOptions {
   }
 
   /**
-   * Sets the default template engine name
+   * Sets the default template engine name. This template engine will be used every time no strategy
+   * is defined in the Fragment Content.
    *
    * @param defaultEngine default engine name
    * @return a reference to this, so the API can be used fluently
@@ -123,7 +124,8 @@ public class TemplateEngineKnotOptions {
   }
 
   /**
-   * Sets template engines entries.
+   * List of the Template Engine Entries. Each item contains definition of new Template Engine strategy.
+   *
    * @param engines - list of engines.
    * @return reference to this, so the API can be used fluently
    */

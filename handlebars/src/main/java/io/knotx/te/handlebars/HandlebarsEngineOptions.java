@@ -127,6 +127,13 @@ public class HandlebarsEngineOptions {
     return startDelimiter;
   }
 
+  /**
+   * Set the start delimiter for the Handlebars engine to recognize start of placeholders.
+   * By default, the Handlebars engine uses `{{` symbols as start delimiter.
+   *
+   * @param startDelimiter
+   * @return
+   */
   public HandlebarsEngineOptions setStartDelimiter(String startDelimiter) {
     this.startDelimiter = startDelimiter;
     return this;
@@ -136,6 +143,12 @@ public class HandlebarsEngineOptions {
     return endDelimiter;
   }
 
+  /**
+   * Set the end delimiter for the Handlebars engine to recognize en of placeholders.
+   * By default, the Handlebars engine uses `}}` symbols as end delimiter.
+   * @param endDelimiter
+   * @return
+   */
   public HandlebarsEngineOptions setEndDelimiter(String endDelimiter) {
     this.endDelimiter = endDelimiter;
     return this;
