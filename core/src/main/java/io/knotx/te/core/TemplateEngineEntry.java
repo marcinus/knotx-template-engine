@@ -54,7 +54,9 @@ public class TemplateEngineEntry {
   }
 
   /**
-   * Sets {@link io.knotx.te.api.TemplateEngineFactory} name
+   * Sets the template engine name that identifies this strategy. This name must be exactly
+   * the same as the TemplateEngineFactory returns. The name is later used in the Fragment Content
+   * to define which template engine should process it. Must be unique.
    *
    * @param name handler factory name
    * @return reference to this, so the API can be used fluently
