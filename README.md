@@ -4,7 +4,7 @@ template engine strategy.
 
 ## How does it work?
 Template Engine filters [Fragments](https://github.com/Cognifide/knotx/wiki/Splitter) containing 
-`te` in the `data-knotx-knots` attribute. Then for each Fragment it merges Fragment Content (snippet) 
+`te` in the `knots` attribute. Then for each Fragment it merges Fragment Content (snippet) 
 with data from Fragment Context (for example data from external services or form submission response)
 using chosen template engine strategy.
 
