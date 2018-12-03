@@ -128,5 +128,15 @@ in the [`knotx-example-project`](https://github.com/Knotx/knotx-example-project)
 
 This module contains an example custom Handlebars helper - `BoldHelper`.
 
-## How to extend?
-// ToDo
+## How to create custom Template Engine strategy?
+All you need to do is simply implement 2 interfaces from the `knotx-template-engine-api`: 
+- [`TemplateEngineFactory`](https://github.com/Knotx/knotx-template-engine/blob/master/api/src/main/java/io/knotx/te/api/TemplateEngineFactory.java)
+- [`TemplateEngine`](https://github.com/Knotx/knotx-template-engine/blob/master/api/src/main/java/io/knotx/te/api/TemplateEngine.java).
+
+and declare `META-INF/services/io.knotx.te.api.TemplateEngineFactory` on the classpath with your 
+`TemplateEngineFactory` implementation.
+
+`handlebars` module in this repo is an example of such implementation.
+You can find another example example in the 
+[Knot.x example project - acme te](https://github.com/Knotx/knotx-example-project/tree/master/acme-template-engine).
+
