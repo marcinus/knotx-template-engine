@@ -12,12 +12,14 @@ using chosen template engine strategy.
 
 *Fragment Content*
 ```html
-<knotx:snippet knots="services,te" databridge-name="first-service" type="text/knotx-snippet">
-<div class="col-md-4">
-  <h2>Snippet1 - {{_result.message}}</h2>
-  <div>Snippet1 - {{_result.body.a}}</div>
-  <div>Success! Status code : {{_response.statusCode}}</div>
-</div>
+<knotx:snippet knots="databridge,te"
+        databridge-name="books"
+        type="text/knotx-snippet">
+  <div class="col-md-4">
+    <h2>{{_result.title}}</h2>
+    <p>{{_result.synopsis.short}}</p>
+    <div>Success! Status code: {{_response.statusCode}}</div>
+  </div>
 </knotx:snippet>
 ```
 
@@ -25,9 +27,9 @@ using chosen template engine strategy.
 ```json
 {
   "_result": {
-    "message":"this is webservice no. 1",
-    "body": {
-      "a": "message a"
+    "title":"Knot.x in Action",
+    "synopsis": {
+      "short": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel enim ac augue egestas rutrum non eget libero."
     }
   },
   "_response": {
@@ -39,9 +41,9 @@ using chosen template engine strategy.
 Template Engine Knot uses data from Fragment Context and applies it to Fragment Content:
 ```html
 <div class="col-md-4">
-  <h2>Snippet1 - this is webservice no. 1</h2>
-  <div>Snippet1 - message a</div>
-  <div>Success! Status code : 200</div>
+  <h2>Knot.x in Action</h2>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel enim ac augue egestas rutrum non eget libero.</p>
+  <div>Success! Status code: 200</div>
 </div>
 ```
 Finally Fragment Content is replaced with merged result.
