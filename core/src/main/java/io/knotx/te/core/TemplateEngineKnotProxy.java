@@ -54,24 +54,38 @@ public class TemplateEngineKnotProxy extends AbstractKnotProxy {
                 .filter(fragment -> fragment.knots().contains(SUPPORTED_FRAGMENT_ID))
                 .doOnNext(this::traceFragment)
                 .map(fragment -> FragmentContext.from(fragment, options.getDefaultEngine()))
-                .map(
-                    fragmentContext -> {
-                      final TemplateEngine templateEngine = engines
-                          .get(fragmentContext.getStrategy());
-                      if (templateEngine != null) {
-                        fragmentContext.fragment().content(
-                            templateEngine
-                                .process(fragmentContext.fragment()));
-                        return fragmentContext;
-                      } else {
-                        throw new UnsupportedEngineException(
-                            "No engine named '" + fragmentContext.getStrategy() + "' found.");
-                      }
-                    })
+                .flatMapSingle(this::processFragment)
                 .toList()
         ).orElse(Single.just(Collections.emptyList()))
         .map(result -> createSuccessResponse(knotContext))
         .onErrorReturn(error -> processError(knotContext, error));
+  }
+
+  protected Single<FragmentContext> processFragment(FragmentContext fc) {
+    return Single.just(fc)
+        .map(fragmentContext -> {
+          final TemplateEngine templateEngine = engines
+              .get(fragmentContext.getStrategy());
+          if (templateEngine != null) {
+            fragmentContext.fragment().content(
+                templateEngine
+                    .process(fragmentContext.fragment()));
+            return fragmentContext;
+          } else {
+            throw new UnsupportedEngineException(
+                "No engine named '" + fragmentContext.getStrategy() + "' found.");
+          }
+        }).onErrorReturn(e-> {
+          fc.fragment().failure(SUPPORTED_FRAGMENT_ID, e);
+          if (!fc.fragment().fallback().isPresent()) {
+            if (e instanceof RuntimeException) {
+              throw (RuntimeException) e;
+            } else {
+              throw new IllegalStateException(e);
+            }
+          }
+          return fc;
+        });
   }
 
   @Override
