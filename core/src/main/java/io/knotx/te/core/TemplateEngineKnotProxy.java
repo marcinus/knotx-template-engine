@@ -18,6 +18,7 @@ package io.knotx.te.core;
 import io.knotx.dataobjects.ClientResponse;
 import io.knotx.dataobjects.Fragment;
 import io.knotx.dataobjects.KnotContext;
+import io.knotx.exceptions.FragmentExecutionException;
 import io.knotx.knot.AbstractKnotProxy;
 import io.knotx.te.api.TemplateEngine;
 import io.knotx.te.core.exception.UnsupportedEngineException;
@@ -75,17 +76,7 @@ public class TemplateEngineKnotProxy extends AbstractKnotProxy {
             throw new UnsupportedEngineException(
                 "No engine named '" + fragmentContext.getStrategy() + "' found.");
           }
-        }).onErrorReturn(e-> {
-          fc.fragment().failure(SUPPORTED_FRAGMENT_ID, e);
-          if (!fc.fragment().fallback().isPresent()) {
-            if (e instanceof RuntimeException) {
-              throw (RuntimeException) e;
-            } else {
-              throw new IllegalStateException(e);
-            }
-          }
-          return fc;
-        });
+        }).onErrorReturn(e -> handleFragmentError(fc, e));
   }
 
   @Override
@@ -116,6 +107,16 @@ public class TemplateEngineKnotProxy extends AbstractKnotProxy {
   private void traceFragment(Fragment fragment) {
     if (LOGGER.isTraceEnabled()) {
       LOGGER.trace("Processing fragment {}", fragment.toJson().encodePrettily());
+    }
+  }
+
+  private FragmentContext handleFragmentError(FragmentContext fragmentContext, Throwable t) {
+    LOGGER.error("Fragment processing failed. Cause:{}\nFragmentContext:\n{}\n", t.getMessage(), fragmentContext);
+    fragmentContext.fragment().failure(SUPPORTED_FRAGMENT_ID, t);
+    if (fragmentContext.fragment().fallback().isPresent()) {
+      return fragmentContext;
+    } else {
+      throw new FragmentExecutionException(String.format("Fragment processing failed in %s", SUPPORTED_FRAGMENT_ID), t);
     }
   }
 }
