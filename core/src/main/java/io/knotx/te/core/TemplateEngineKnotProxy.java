@@ -18,7 +18,7 @@ package io.knotx.te.core;
 import io.knotx.dataobjects.ClientResponse;
 import io.knotx.dataobjects.Fragment;
 import io.knotx.dataobjects.KnotContext;
-import io.knotx.exceptions.FragmentExecutionException;
+import io.knotx.exceptions.FragmentProcessingException;
 import io.knotx.knot.AbstractKnotProxy;
 import io.knotx.te.api.TemplateEngine;
 import io.knotx.te.core.exception.UnsupportedEngineException;
@@ -116,7 +116,7 @@ public class TemplateEngineKnotProxy extends AbstractKnotProxy {
     if (fragmentContext.fragment().fallback().isPresent()) {
       return fragmentContext;
     } else {
-      throw new FragmentExecutionException(String.format("Fragment processing failed in %s", SUPPORTED_FRAGMENT_ID), t);
+      throw new FragmentProcessingException(String.format("Fragment processing failed in %s", SUPPORTED_FRAGMENT_ID), t);
     }
   }
 }
