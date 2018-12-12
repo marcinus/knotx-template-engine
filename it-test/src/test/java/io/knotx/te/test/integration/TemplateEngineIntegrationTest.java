@@ -3,6 +3,8 @@ package io.knotx.te.test.integration;
 import static io.knotx.junit5.util.RequestUtil.subscribeToResult_shouldSucceed;
 import static org.hamcrest.Matchers.equalToIgnoringWhiteSpace;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import io.knotx.dataobjects.ClientRequest;
 import io.knotx.dataobjects.Fragment;
@@ -37,8 +39,23 @@ public class TemplateEngineIntegrationTest {
         knotContext -> {
           final String expectedMarkup = fileContentAsString("result/simple.txt");
           final String markup = knotContext.getFragments().iterator().next().content();
+          final boolean failed = knotContext.getFragments().iterator().next().failed();
 
+          assertFalse(failed);
           assertThat(markup, equalToIgnoringWhiteSpace(expectedMarkup));
+        });
+  }
+
+  @Test
+  @KnotxApplyConfiguration("templateEngineStack.conf")
+  void callTemplateEngine_validateFallback(VertxTestContext context, Vertx vertx)
+      throws IOException, URISyntaxException {
+
+    callWithAssertions(context, vertx, "snippet/simple-missing-engine.txt", "data/simple.json",
+        knotContext -> {
+          final boolean failed = knotContext.getFragments().iterator().next().failed();
+
+          assertTrue(failed);
         });
   }
 
@@ -63,7 +80,8 @@ public class TemplateEngineIntegrationTest {
     String fragmentContent = fileContentAsString(snippetPath);
     JsonObject data = new JsonObject(fileContentAsString(dataPath));
 
-    final Fragment fragment = Fragment
+    final Fragment fragment = fragmentContent.contains("fallback")? Fragment
+        .snippet(Collections.singletonList("te"), fragmentContent, "BLANK") :  Fragment
         .snippet(Collections.singletonList("te"), fragmentContent);
     fragment.context().mergeIn(new JsonObject(Collections.singletonMap("_result", data)));
 
