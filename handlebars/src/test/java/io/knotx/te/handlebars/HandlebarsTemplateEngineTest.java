@@ -45,7 +45,7 @@ class HandlebarsTemplateEngineTest {
     final Fragment fragment = mockFragmentFromFile("templates/simple-customDelimiter.hbs",
         "data/simpleFragment.json");
     final String result = templateEngine.process(fragment).trim();
-    final String expected = FileReader.readText("results/expected").trim();
+    final String expected = FileReader.readText("results/expected-customDelimiter").trim();
     assertThat(result, equalToIgnoringWhiteSpace(expected));
   }
 
