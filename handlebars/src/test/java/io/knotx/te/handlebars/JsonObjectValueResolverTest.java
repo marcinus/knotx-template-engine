@@ -22,7 +22,6 @@ import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import io.knotx.junit5.util.FileReader;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,14 +33,16 @@ public class JsonObjectValueResolverTest {
 
   @BeforeEach
   public void before() throws Exception {
-    template = new Handlebars().compileInline(FileReader.readText("templates/sample.hbs"));
+    template = new Handlebars()
+        .compileInline(FileReader.readText("templates/handlebars-template.hbs"));
     expected = FileReader.readText("results/expected").trim();
   }
 
   @Test
   public void JsonObjectResolver_whenApplyingObject_expectVariablesResolved()
       throws Exception {
-    Context context = Context.newBuilder(readModelFromFile())
+    Context context = Context
+        .newBuilder(new JsonObject(FileReader.readText("data/sampleContext.json")))
         .push(JsonObjectValueResolver.INSTANCE)
         .build();
     String compiled = template.apply(context).trim();
@@ -49,17 +50,5 @@ public class JsonObjectValueResolverTest {
     assertThat(compiled, equalTo(expected));
   }
 
-  private JsonObject programmaticModel() {
-    return new JsonObject().put("sample",
-        new JsonObject().put("result",
-            new JsonObject().put("first", "First Message")
-                .put("second",
-                    new JsonObject().put("foo", "Very Long Second Foo Message !! 2 &&%^$")))
-            .put("arr", new JsonArray().add(1).add(2).add(3).add("foo").add("bar").add(true)));
 
-  }
-
-  private JsonObject readModelFromFile() throws Exception {
-    return new JsonObject(FileReader.readText("data/testObject.json"));
-  }
 }

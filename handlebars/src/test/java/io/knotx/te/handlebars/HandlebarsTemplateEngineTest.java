@@ -31,7 +31,7 @@ class HandlebarsTemplateEngineTest {
     final HandlebarsTemplateEngine templateEngine = new HandlebarsTemplateEngine(vertx, options);
 
     final Fragment fragment = mockFragmentFromFile("templates/simple.hbs",
-        "data/simpleFragment.json");
+        "data/sampleContext.json");
     final String result = templateEngine.process(fragment).trim();
     final String expected = FileReader.readText("results/expected").trim();
     assertThat(result, equalToIgnoringWhiteSpace(expected));
@@ -43,9 +43,19 @@ class HandlebarsTemplateEngineTest {
     final HandlebarsTemplateEngine templateEngine = new HandlebarsTemplateEngine(vertx, options);
 
     final Fragment fragment = mockFragmentFromFile("templates/simple-customDelimiter.hbs",
-        "data/simpleFragment.json");
+        "data/sampleContext.json");
     final String result = templateEngine.process(fragment).trim();
     final String expected = FileReader.readText("results/expected-customDelimiter").trim();
+    assertThat(result, equalToIgnoringWhiteSpace(expected));
+  }
+
+  @Test
+  void process_whenEmptyContext_expectMarkup() throws IOException {
+    final HandlebarsTemplateEngine templateEngine = new HandlebarsTemplateEngine(vertx, options);
+    final Fragment fragment = mockFragmentFromFile("templates/simple.hbs",
+        "data/emptyContext.json");
+    final String result = templateEngine.process(fragment).trim();
+    final String expected = FileReader.readText("results/expected-emptyContext").trim();
     assertThat(result, equalToIgnoringWhiteSpace(expected));
   }
 

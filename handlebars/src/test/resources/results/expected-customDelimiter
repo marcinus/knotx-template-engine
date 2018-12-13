@@ -1,4 +1,4 @@
-First Message
-Very Long Second Foo Message !! 2 &amp;&amp;%^$
-1 2 3 foo bar true
-{{sample.result.first}}
+  First: First Message
+  Second: Very Long Second Foo Message !! 2 &amp;&amp;%^$
+  Array: 1 2 3 foo bar true
+  {{sample.result.first}}
