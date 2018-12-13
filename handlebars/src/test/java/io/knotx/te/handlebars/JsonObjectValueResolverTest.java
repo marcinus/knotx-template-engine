@@ -34,24 +34,15 @@ public class JsonObjectValueResolverTest {
 
   @BeforeEach
   public void before() throws Exception {
-    template = new Handlebars().compileInline(FileReader.readText("sample.hbs"));
-    expected = FileReader.readText("expected").trim();
+    template = new Handlebars().compileInline(FileReader.readText("templates/sample.hbs"));
+    expected = FileReader.readText("results/expected").trim();
   }
 
   @Test
-  public void JsonObjectResolver_whenApplyingProgrammaticallyCreatedObject_expectVariablesResolved()
+  public void JsonObjectResolver_whenApplyingObject_expectVariablesResolved()
       throws Exception {
-    Context context = Context.newBuilder(programmaticModel()).push(JsonObjectValueResolver.INSTANCE)
-        .build();
-    String compiled = template.apply(context).trim();
-
-    assertThat(compiled, equalTo(expected));
-  }
-
-  @Test
-  public void JsonObjectResolver_whenApplyingFileBasedObject_expectVariablesResolved()
-      throws Exception {
-    Context context = Context.newBuilder(filebasedModel()).push(JsonObjectValueResolver.INSTANCE)
+    Context context = Context.newBuilder(readModelFromFile())
+        .push(JsonObjectValueResolver.INSTANCE)
         .build();
     String compiled = template.apply(context).trim();
 
@@ -68,7 +59,7 @@ public class JsonObjectValueResolverTest {
 
   }
 
-  private JsonObject filebasedModel() throws Exception {
-    return new JsonObject(FileReader.readText("testObject.json"));
+  private JsonObject readModelFromFile() throws Exception {
+    return new JsonObject(FileReader.readText("data/testObject.json"));
   }
 }
