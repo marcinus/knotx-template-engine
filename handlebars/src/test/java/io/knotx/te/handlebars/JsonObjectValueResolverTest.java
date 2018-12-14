@@ -35,7 +35,7 @@ public class JsonObjectValueResolverTest {
   public void before() throws Exception {
     template = new Handlebars()
         .compileInline(FileReader.readText("templates/handlebars-template.hbs"));
-    expected = FileReader.readText("results/expected").trim();
+    expected = FileReader.readText("results/simple").trim();
   }
 
   @Test
