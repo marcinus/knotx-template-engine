@@ -33,7 +33,7 @@ class HandlebarsTemplateEngineTest {
     final Fragment fragment = mockFragmentFromFile("templates/simple.hbs",
         "data/sampleContext.json");
     final String result = templateEngine.process(fragment).trim();
-    final String expected = FileReader.readText("results/expected").trim();
+    final String expected = FileReader.readText("results/simple").trim();
     assertThat(result, equalToIgnoringWhiteSpace(expected));
   }
 
@@ -45,7 +45,7 @@ class HandlebarsTemplateEngineTest {
     final Fragment fragment = mockFragmentFromFile("templates/simple-customDelimiter.hbs",
         "data/sampleContext.json");
     final String result = templateEngine.process(fragment).trim();
-    final String expected = FileReader.readText("results/expected-customDelimiter").trim();
+    final String expected = FileReader.readText("results/customDelimiter").trim();
     assertThat(result, equalToIgnoringWhiteSpace(expected));
   }
 
@@ -55,7 +55,27 @@ class HandlebarsTemplateEngineTest {
     final Fragment fragment = mockFragmentFromFile("templates/simple.hbs",
         "data/emptyContext.json");
     final String result = templateEngine.process(fragment).trim();
-    final String expected = FileReader.readText("results/expected-emptyContext").trim();
+    final String expected = FileReader.readText("results/emptyContext").trim();
+    assertThat(result, equalToIgnoringWhiteSpace(expected));
+  }
+
+  @Test
+  void process_whenEmptyContent_expectMarkup() throws IOException {
+    final HandlebarsTemplateEngine templateEngine = new HandlebarsTemplateEngine(vertx, options);
+    final Fragment fragment = mockFragmentFromFile("templates/empty.hbs",
+        "data/sampleContext.json");
+    final String result = templateEngine.process(fragment).trim();
+    final String expected = FileReader.readText("results/emptyContent").trim();
+    assertThat(result, equalToIgnoringWhiteSpace(expected));
+  }
+
+  @Test
+  void process_whenUndefinedHbsHelperSpotted_expectMarkup() throws IOException {
+    final HandlebarsTemplateEngine templateEngine = new HandlebarsTemplateEngine(vertx, options);
+    final Fragment fragment = mockFragmentFromFile("templates/undefinedHelper.hbs",
+        "data/sampleContext.json");
+    final String result = templateEngine.process(fragment).trim();
+    final String expected = FileReader.readText("results/undefinedHelper").trim();
     assertThat(result, equalToIgnoringWhiteSpace(expected));
   }
 
