@@ -29,6 +29,9 @@ ext {
 dependencies {
   compile project(':knotx-template-engine-api')
   compile("com.github.jknack:handlebars:$handlebarsVersion")
+
+  testCompile 'org.mockito:mockito-core'
+  testCompile 'org.mockito:mockito-junit-jupiter'
 }
 
 
