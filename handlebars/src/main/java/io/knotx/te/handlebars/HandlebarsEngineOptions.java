@@ -131,7 +131,7 @@ public class HandlebarsEngineOptions {
    * Set the start delimiter for the Handlebars engine to recognize start of placeholders.
    * By default, the Handlebars engine uses `{{` symbols as start delimiter.
    *
-   * @param startDelimiter
+   * @param startDelimiter - the delimiter that will distinguish beginning of the handlebars expression
    * @return a reference to this, so the API can be used fluently
    */
   public HandlebarsEngineOptions setStartDelimiter(String startDelimiter) {
@@ -146,7 +146,7 @@ public class HandlebarsEngineOptions {
   /**
    * Set the end delimiter for the Handlebars engine to recognize en of placeholders.
    * By default, the Handlebars engine uses `}}` symbols as end delimiter.
-   * @param endDelimiter
+   * @param endDelimiter - the delimiter that will distinguish end of the handlebars expression
    * @return a reference to this, so the API can be used fluently
    */
   public HandlebarsEngineOptions setEndDelimiter(String endDelimiter) {
