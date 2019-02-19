@@ -15,60 +15,49 @@
  */
 package io.knotx.te.core.fragment;
 
-import io.knotx.dataobjects.Fragment;
-import java.util.List;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Attribute;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import io.knotx.engine.api.FragmentEvent;
+import io.vertx.core.json.JsonObject;
+import java.util.Optional;
 
 public class FragmentContext {
 
-  private static final String TE_STRATEGY =
-      ".*te-strategy.*";
+  private static final String TE_STRATEGY = "te-strategy";
 
-  private Fragment fragment;
+  private FragmentEvent event;
   private String strategy;
 
-  private FragmentContext(Fragment fragment, String strategy) {
-    this.fragment = fragment;
+  private FragmentContext(FragmentEvent event, String strategy) {
+    this.event = event;
     this.strategy = strategy;
   }
 
   /**
-   * Factory method that creates context from the {@link Fragment}. Template Engine strategy is
+   * Factory method that creates context from the {@link FragmentEvent}. Template Engine strategy is
    * extracted to separate field.
    *
-   * @param fragment - fragment from which the context will be created.
+   * @param event - fragment event from which the context will be created.
    * @param defaultStrategy - default strategy that will be used when no strategy is defined in the
    * fragment
    * @return a FragmentContext that wraps given fragment.
    */
-  public static FragmentContext from(Fragment fragment, String defaultStrategy) {
-    Document document = Jsoup.parseBodyFragment(fragment.content());
-    Element scriptTag = document.body().child(0);
-
-    List<Attribute> attributes = scriptTag.attributes().asList();
-    final String strategy = attributes.stream()
-        .filter(attribute -> attribute.getKey().matches(TE_STRATEGY))
-        .findFirst()
-        .map(Attribute::getValue)
+  public static FragmentContext from(FragmentEvent event, String defaultStrategy) {
+    JsonObject attributes = event.getFragment().getConfiguration();
+    String strategy = Optional.ofNullable(attributes.getString(TE_STRATEGY))
         .orElse(defaultStrategy);
-
-    return new FragmentContext(fragment, strategy);
+    return new FragmentContext(event, strategy);
   }
 
   /**
-   * @return a fragment wrapped in this context.
+   * @return fragment event
    */
-  public Fragment fragment() {
-    return fragment;
+  public FragmentEvent event() {
+    return event;
   }
 
   /**
    * @return strategy for template engine processing of the fragment
    */
-  public String getStrategy() {
+  public String strategy() {
     return strategy;
   }
 
