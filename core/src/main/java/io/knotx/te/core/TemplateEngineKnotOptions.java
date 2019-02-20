@@ -26,11 +26,6 @@ import java.util.List;
 @DataObject(generateConverter = true, publicConverter = false)
 public class TemplateEngineKnotOptions {
 
-  /**
-   * Default EB address of the verticle
-   */
-  public final static String DEFAULT_ADDRESS = "te";
-
   private String defaultEngine;
   private List<TemplateEngineEntry> engines;
 
