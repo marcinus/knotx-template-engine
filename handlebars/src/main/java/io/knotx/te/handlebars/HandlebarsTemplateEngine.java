@@ -60,7 +60,7 @@ class HandlebarsTemplateEngine implements TemplateEngine {
   public String process(Fragment fragment) {
     Template template = template(fragment);
     if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace("Applying context to template [{}]!", fragment);
+      LOGGER.trace("Processing with handlebars: {}!", fragment);
     }
     try {
       return template.apply(
@@ -79,7 +79,7 @@ class HandlebarsTemplateEngine implements TemplateEngine {
 
       return cache.get(cacheKey, () -> {
         if (LOGGER.isTraceEnabled()) {
-          LOGGER.trace("Compiles Handlebars fragment [{}]", fragment);
+          LOGGER.trace("Compiled Handlebars fragment [{}]", fragment);
         }
         return handlebars.compileInline(fragment.getBody());
       });

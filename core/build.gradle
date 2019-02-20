@@ -25,7 +25,7 @@ configurations {
 dependencies {
   compile project(':knotx-template-engine-api')
   compile("org.apache.commons:commons-lang3")
-
+  
   testCompile project(':knotx-template-engine-api')
 
   testResources sourceSets.test.output
