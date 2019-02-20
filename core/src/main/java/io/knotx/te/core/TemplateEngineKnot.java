@@ -35,7 +35,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class TemplateEngineKnot extends AbstractVerticle {
 
-  public final static String EB_ADDRESS = "knotx-te";
+  public final static String EB_ADDRESS = "knotx.knot.te";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TemplateEngineKnot.class);
 
