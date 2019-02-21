@@ -22,6 +22,9 @@ dependencies {
   compile project(':knotx-template-engine-api')
   compile project(':knotx-template-engine-core')
   compile project(':knotx-template-engine-handlebars')
+
+  testCompile group: 'io.knotx', name: 'knotx-launcher', version: "${project.version}"
+  testCompile group: 'io.knotx', name: 'knotx-launcher', version: "${project.version}", classifier: 'tests'
 }
 
 sourceSets {

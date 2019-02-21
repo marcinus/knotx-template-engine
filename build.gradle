@@ -53,13 +53,14 @@ subprojects { subproject ->
   }
 
   dependencies {
-    compile 'io.knotx:knotx-core'
+    compile 'io.knotx:knotx-knot-engine-api'
 
     compile 'io.vertx:vertx-core'
     compile 'io.vertx:vertx-service-proxy'
     compile 'io.vertx:vertx-rx-java2'
 
     compileOnly 'io.vertx:vertx-codegen'
+    compileOnly 'io.vertx:vertx-rx-java2-gen'
 
     // Test dependencies
     testCompile 'org.junit.jupiter:junit-jupiter-api'
@@ -74,7 +75,6 @@ subprojects { subproject ->
     testCompileOnly 'io.vertx:vertx-codegen'
     testCompile 'io.vertx:vertx-config'
     testCompile 'io.vertx:vertx-junit5'
-    testCompile 'io.knotx:knotx-mocks'
     testCompile 'io.knotx:knotx-junit5'
   }
 

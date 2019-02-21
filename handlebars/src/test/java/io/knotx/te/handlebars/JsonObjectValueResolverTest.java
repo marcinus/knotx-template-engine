@@ -26,20 +26,20 @@ import io.vertx.core.json.JsonObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class JsonObjectValueResolverTest {
+class JsonObjectValueResolverTest {
 
   private String expected;
   private Template template;
 
   @BeforeEach
-  public void before() throws Exception {
+  void before() throws Exception {
     template = new Handlebars()
         .compileInline(FileReader.readText("templates/handlebars-template.hbs"));
     expected = FileReader.readText("results/simple").trim();
   }
 
   @Test
-  public void JsonObjectResolver_whenApplyingObject_expectVariablesResolved()
+  void JsonObjectResolver_whenApplyingObject_expectVariablesResolved()
       throws Exception {
     Context context = Context
         .newBuilder(new JsonObject(FileReader.readText("data/sampleContext.json")))
