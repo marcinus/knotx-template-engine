@@ -15,7 +15,7 @@
  */
 package io.knotx.te.core;
 
-import io.knotx.proxy.KnotProxy;
+import io.knotx.engine.api.KnotProxy;
 import io.knotx.te.api.TemplateEngine;
 import io.knotx.te.api.TemplateEngineFactory;
 import io.vertx.core.Context;
@@ -33,8 +33,9 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 
-
 public class TemplateEngineKnot extends AbstractVerticle {
+
+  public final static String EB_ADDRESS = "knotx.knot.te";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TemplateEngineKnot.class);
 
@@ -57,7 +58,7 @@ public class TemplateEngineKnot extends AbstractVerticle {
     //register the service proxy on event bus
     serviceBinder = new ServiceBinder(getVertx());
     consumer = serviceBinder
-        .setAddress(options.getAddress())
+        .setAddress(EB_ADDRESS)
         .register(KnotProxy.class, new TemplateEngineKnotProxy(options, loadTemplateEngines()));
   }
 

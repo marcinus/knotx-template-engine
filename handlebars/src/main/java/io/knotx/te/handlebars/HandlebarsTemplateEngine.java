@@ -15,16 +15,12 @@
  */
 package io.knotx.te.handlebars;
 
-import static io.knotx.fragments.FragmentContentExtractor.abbreviate;
-import static io.knotx.fragments.FragmentContentExtractor.unwrapContent;
-
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import io.knotx.dataobjects.Fragment;
-import io.knotx.fragments.FragmentContentExtractor;
+import io.knotx.fragment.Fragment;
 import io.knotx.te.api.TemplateEngine;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -64,17 +60,15 @@ class HandlebarsTemplateEngine implements TemplateEngine {
   public String process(Fragment fragment) {
     Template template = template(fragment);
     if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace("Applying context [{}] to template [{}]!", fragment.context(),
-          abbreviate(template.text()));
+      LOGGER.trace("Processing with handlebars: {}!", fragment);
     }
     try {
       return template.apply(
-          Context.newBuilder(fragment.context())
+          Context.newBuilder(fragment.getPayload())
               .push(JsonObjectValueResolver.INSTANCE)
               .build());
     } catch (IOException e) {
-      LOGGER.error("Could not apply context [{}] to template [{}]", fragment.context(),
-          abbreviate(template.text()), e);
+      LOGGER.error("Could not apply context to fragment [{}]", fragment.abbreviate(), e);
       throw new IllegalStateException(e);
     }
   }
@@ -84,20 +78,19 @@ class HandlebarsTemplateEngine implements TemplateEngine {
       String cacheKey = getCacheKey(fragment);
 
       return cache.get(cacheKey, () -> {
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("Compiles Handlebars fragment [{}]", abbreviate(fragment.content()));
+        if (LOGGER.isTraceEnabled()) {
+          LOGGER.trace("Compiled Handlebars fragment [{}]", fragment);
         }
-        return handlebars.compileInline(unwrapContent(fragment));
+        return handlebars.compileInline(fragment.getBody());
       });
     } catch (ExecutionException e) {
-      FragmentContentExtractor.abbreviate(fragment.content());
-      LOGGER.error("Could not compile fragment [{}]", abbreviate(fragment.content()), e);
+      LOGGER.error("Could not compile fragment [{}]", fragment.abbreviate(), e);
       throw new IllegalStateException(e);
     }
   }
 
   private String getCacheKey(Fragment fragment) {
-    byte[] cacheKeyBytes = digest.digest(fragment.content().getBytes(StandardCharsets.UTF_8));
+    byte[] cacheKeyBytes = digest.digest(fragment.getBody().getBytes(StandardCharsets.UTF_8));
     return new String(cacheKeyBytes);
   }
 

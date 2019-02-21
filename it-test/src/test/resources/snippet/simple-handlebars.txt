@@ -1,6 +1,2 @@
-<knotx:snippet knots="te"
-            te-strategy="handlebars"
-            type="text/knotx-snippet">
   <h2>Message - {{_result.message}}</h2>
   <p>Info - {{_result.body.info}}</p>
-</knotx:snippet>
