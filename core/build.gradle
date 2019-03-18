@@ -23,7 +23,7 @@ configurations {
 }
 
 dependencies {
-  compileOnly project(':knotx-template-engine-api')
+  compile project(':knotx-template-engine-api')
 
   testCompile project(':knotx-template-engine-api')
   testCompile group: 'io.knotx', name: 'knotx-core', version: "${project.version}", classifier: 'tests'
