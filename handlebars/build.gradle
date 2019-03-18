@@ -27,7 +27,7 @@ ext {
 }
 
 dependencies {
-  compile project(':knotx-template-engine-api')
+  compileOnly project(':knotx-template-engine-api')
   compile("com.github.jknack:handlebars:$handlebarsVersion")
 
   testCompile 'org.mockito:mockito-core'
