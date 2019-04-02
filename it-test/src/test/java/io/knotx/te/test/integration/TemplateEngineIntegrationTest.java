@@ -2,21 +2,20 @@ package io.knotx.te.test.integration;
 
 import static io.knotx.junit5.util.RequestUtil.subscribeToResult_shouldSucceed;
 import static org.hamcrest.Matchers.equalToIgnoringWhiteSpace;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.knotx.engine.api.FragmentEvent;
-import io.knotx.engine.api.FragmentEvent.Status;
-import io.knotx.engine.api.FragmentEventContext;
-import io.knotx.engine.api.FragmentEventResult;
-import io.knotx.engine.api.KnotFlow;
-import io.knotx.engine.reactivex.api.KnotProxy;
 import io.knotx.fragment.Fragment;
+import io.knotx.fragments.handler.api.fragment.FragmentContext;
+import io.knotx.fragments.handler.api.fragment.FragmentResult;
+import io.knotx.fragments.handler.reactivex.api.Knot;
 import io.knotx.junit5.KnotxApplyConfiguration;
 import io.knotx.junit5.KnotxExtension;
 import io.knotx.junit5.util.FileReader;
+import io.knotx.junit5.util.RequestUtil;
 import io.knotx.server.api.context.ClientRequest;
 import io.knotx.te.core.TemplateEngineKnot;
+import io.knotx.te.core.TemplateEngineKnotOptions;
 import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import io.vertx.core.json.JsonObject;
@@ -41,12 +40,11 @@ class TemplateEngineIntegrationTest {
       throws IOException {
 
     callWithAssertions(context, vertx, "snippet/simple-handlebars.txt", "data/simple.json",
-        new KnotFlow(TemplateEngineKnot.EB_ADDRESS, Collections.emptyMap()),
-        fer -> {
+        fragmentResult -> {
           final String expectedMarkup = fileContentAsString("result/simple.txt");
-          final String markup = fer.getFragmentEvent().getFragment().getBody();
+          final String markup = fragmentResult.getFragment().getBody();
 
-          assertEquals(Status.SUCCESS, fer.getFragmentEvent().getStatus());
+          assertEquals(FragmentResult.DEFAULT_TRANSITION, fragmentResult.getTransition());
           assertThat(markup, equalToIgnoringWhiteSpace(expectedMarkup));
         });
   }
@@ -58,12 +56,12 @@ class TemplateEngineIntegrationTest {
       throws IOException {
 
     callWithAssertions(context, vertx, "snippet/simple-handlebars.txt", "data/simple.json",
-        "handlebars", new KnotFlow(TemplateEngineKnot.EB_ADDRESS, Collections.emptyMap()),
-        fer -> {
+        "handlebars",
+        fragmentResult -> {
           final String expectedMarkup = fileContentAsString("result/simple.txt");
-          final String markup = fer.getFragmentEvent().getFragment().getBody();
+          final String markup = fragmentResult.getFragment().getBody();
 
-          assertEquals(Status.SUCCESS, fer.getFragmentEvent().getStatus());
+          assertEquals(FragmentResult.DEFAULT_TRANSITION, fragmentResult.getTransition());
           assertThat(markup, equalToIgnoringWhiteSpace(expectedMarkup));
         });
   }
@@ -74,41 +72,46 @@ class TemplateEngineIntegrationTest {
   void callNonExistingEngine(VertxTestContext context, Vertx vertx)
       throws IOException {
 
-    callWithAssertions(context, vertx, "snippet/simple-handlebars.txt", "data/simple.json",
+    expectFailureWithAssertions(context, vertx, "snippet/simple-handlebars.txt", "data/simple.json",
         "non-existing",
-        new KnotFlow(TemplateEngineKnot.EB_ADDRESS, Collections.emptyMap()),
-        fer -> assertEquals(Status.FAILURE, fer.getFragmentEvent().getStatus()));
+        error -> {
+        });
+  }
+
+  private void expectFailureWithAssertions(VertxTestContext context, Vertx vertx,
+      String bodyPath, String payloadPath, String teStrategy,
+      Consumer<Throwable> error) throws IOException {
+    FragmentContext message = payloadMessage(bodyPath, payloadPath, teStrategy);
+    Knot service = Knot.createProxy(vertx, TemplateEngineKnotOptions.DEFAULT_ADDRESS);
+    Single<FragmentResult> fragmentResult = service.rxApply(message);
+    RequestUtil.subscribeToResult_shouldFail(context, fragmentResult, error);
   }
 
   private void callWithAssertions(VertxTestContext context, Vertx vertx,
-      String bodyPath, String payloadPath, String teStrategy, KnotFlow flow,
-      Consumer<FragmentEventResult> onSuccess) throws IOException {
-    FragmentEventContext message = payloadMessage(bodyPath, payloadPath, teStrategy, flow);
-
+      String bodyPath, String payloadPath, String teStrategy,
+      Consumer<FragmentResult> onSuccess) throws IOException {
+    FragmentContext message = payloadMessage(bodyPath, payloadPath, teStrategy);
     rxProcessWithAssertions(context, vertx, onSuccess, message);
   }
 
   private void callWithAssertions(VertxTestContext context, Vertx vertx,
-      String bodyPath, String payloadPath, KnotFlow flow, Consumer<FragmentEventResult> onSuccess)
+      String bodyPath, String payloadPath, Consumer<FragmentResult> onSuccess)
       throws IOException {
-    callWithAssertions(context, vertx, bodyPath, payloadPath, null, flow, onSuccess);
+    callWithAssertions(context, vertx, bodyPath, payloadPath, null, onSuccess);
   }
 
   private void rxProcessWithAssertions(VertxTestContext context, Vertx vertx,
-      Consumer<FragmentEventResult> onSuccess, FragmentEventContext payload) {
-    KnotProxy service = KnotProxy.createProxy(vertx, TemplateEngineKnot.EB_ADDRESS);
-    Single<FragmentEventResult> SnippetFragmentsContextSingle = service.rxProcess(payload);
+      Consumer<FragmentResult> onSuccess, FragmentContext payload) {
+    Knot service = Knot.createProxy(vertx, TemplateEngineKnotOptions.DEFAULT_ADDRESS);
+    Single<FragmentResult> fragmentResult = service.rxApply(payload);
 
-    subscribeToResult_shouldSucceed(context, SnippetFragmentsContextSingle, onSuccess);
+    subscribeToResult_shouldSucceed(context, fragmentResult, onSuccess);
   }
 
-  private FragmentEventContext payloadMessage(String bodyPath, String payloadPath,
-      String teStrategy,
-      KnotFlow flow)
+  private FragmentContext payloadMessage(String bodyPath, String payloadPath, String teStrategy)
       throws IOException {
-    return new FragmentEventContext(
-        new FragmentEvent(fromJsonFiles(bodyPath, payloadPath, teStrategy), flow),
-        new ClientRequest(), 0);
+    return new FragmentContext(fromJsonFiles(bodyPath, payloadPath, teStrategy),
+        new ClientRequest());
   }
 
   private Fragment fromJsonFiles(String bodyPath, String payloadPath, String teStrategy)
@@ -116,7 +119,7 @@ class TemplateEngineIntegrationTest {
     final String body = FileReader.readText(bodyPath);
     final String payload = FileReader.readText(payloadPath);
 
-    final JsonObject configuration = new JsonObject().put("knots", "te");
+    final JsonObject configuration = new JsonObject();
     if (teStrategy != null) {
       configuration.put("te-strategy", teStrategy);
 

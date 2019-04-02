@@ -15,7 +15,7 @@
  */
 package io.knotx.te.core.fragment;
 
-import io.knotx.engine.api.FragmentEvent;
+import io.knotx.fragment.Fragment;
 import io.vertx.core.json.JsonObject;
 import java.util.Optional;
 
@@ -23,35 +23,35 @@ public class FragmentContext {
 
   private static final String TE_STRATEGY = "te-strategy";
 
-  private FragmentEvent event;
+  private Fragment fragment;
   private String strategy;
 
-  private FragmentContext(FragmentEvent event, String strategy) {
-    this.event = event;
+  private FragmentContext(Fragment fragment, String strategy) {
+    this.fragment = fragment;
     this.strategy = strategy;
   }
 
   /**
-   * Factory method that creates context from the {@link FragmentEvent}. Template Engine strategy is
+   * Factory method that creates context from the {@link Fragment}. Template Engine strategy is
    * extracted to separate field.
    *
-   * @param event - fragment event from which the context will be created.
+   * @param fragment - fragment from which the context will be created.
    * @param defaultStrategy - default strategy that will be used when no strategy is defined in the
    * fragment
    * @return a FragmentContext that wraps given fragment.
    */
-  public static FragmentContext from(FragmentEvent event, String defaultStrategy) {
-    JsonObject attributes = event.getFragment().getConfiguration();
+  public static FragmentContext from(Fragment fragment, String defaultStrategy) {
+    JsonObject attributes = fragment.getConfiguration();
     String strategy = Optional.ofNullable(attributes.getString(TE_STRATEGY))
         .orElse(defaultStrategy);
-    return new FragmentContext(event, strategy);
+    return new FragmentContext(fragment, strategy);
   }
 
   /**
-   * @return fragment event
+   * @return fragment
    */
-  public FragmentEvent event() {
-    return event;
+  public Fragment fragment() {
+    return fragment;
   }
 
   /**

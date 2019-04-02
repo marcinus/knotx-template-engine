@@ -15,10 +15,18 @@
  */
 package io.knotx.te.core;
 
-import io.knotx.engine.api.KnotProxy;
+import io.knotx.fragment.Fragment;
+import io.knotx.fragments.handler.api.Knot;
+import io.knotx.fragments.handler.api.exception.KnotProcessingFatalException;
+import io.knotx.fragments.handler.api.fragment.FragmentResult;
 import io.knotx.te.api.TemplateEngine;
 import io.knotx.te.api.TemplateEngineFactory;
+import io.knotx.te.core.fragment.FragmentContext;
+import io.reactivex.Single;
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonObject;
@@ -33,22 +41,42 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 
-public class TemplateEngineKnot extends AbstractVerticle {
-
-  public final static String EB_ADDRESS = "knotx.knot.te";
+public class TemplateEngineKnot extends AbstractVerticle implements Knot {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TemplateEngineKnot.class);
 
-  private TemplateEngineKnotOptions options;
-
   private MessageConsumer<JsonObject> consumer;
-
   private ServiceBinder serviceBinder;
+
+  private TemplateEngineKnotOptions options;
+  private Map<String, TemplateEngine> engines;
+
+  @Override
+  public void apply(io.knotx.fragments.handler.api.fragment.FragmentContext fragmentContext,
+      Handler<AsyncResult<FragmentResult>> result) {
+    Single.just(fragmentContext)
+        .map(ctx -> FragmentContext.from(ctx.getFragment(), options.getDefaultEngine()))
+        .doOnSuccess(this::traceFragment)
+        .flatMap(this::processFragment)
+        .map(this::createSuccessResponse)
+        .subscribe(
+            fragmentResult -> {
+              LOGGER.debug("Processing ends with result [{}]", fragmentResult);
+              Future.succeededFuture(fragmentResult).setHandler(result);
+            },
+            error -> {
+              LOGGER.error("Processing ends with exception!", error);
+              Future<FragmentResult> future = Future.failedFuture(error);
+              future.setHandler(result);
+            }
+        );
+  }
 
   @Override
   public void init(Vertx vertx, Context context) {
     super.init(vertx, context);
     this.options = new TemplateEngineKnotOptions(config());
+
   }
 
   @Override
@@ -57,15 +85,41 @@ public class TemplateEngineKnot extends AbstractVerticle {
 
     //register the service proxy on event bus
     serviceBinder = new ServiceBinder(getVertx());
-    consumer = serviceBinder
-        .setAddress(EB_ADDRESS)
-        .register(KnotProxy.class, new TemplateEngineKnotProxy(options, loadTemplateEngines()));
+    engines = loadTemplateEngines();
+
+    consumer = serviceBinder.setAddress(options.getAddress()).register(Knot.class, this);
   }
 
   @Override
   public void stop() {
     serviceBinder.unregister(consumer);
   }
+
+  private Single<FragmentContext> processFragment(FragmentContext fc) {
+    return Single.just(fc)
+        .map(fragmentContext -> {
+          final TemplateEngine templateEngine = engines
+              .get(fragmentContext.strategy());
+          Fragment fragment = fragmentContext.fragment();
+          if (templateEngine != null) {
+            fragment.setBody(templateEngine.process(fragment));
+            return fragmentContext;
+          } else {
+            throw new KnotProcessingFatalException(fragment);
+          }
+        });
+  }
+
+  private FragmentResult createSuccessResponse(FragmentContext fragmentContext) {
+    return new FragmentResult(fragmentContext.fragment(), FragmentResult.DEFAULT_TRANSITION);
+  }
+
+  private void traceFragment(FragmentContext ctx) {
+    if (LOGGER.isTraceEnabled()) {
+      LOGGER.trace("Processing fragment {}", ctx.fragment().toJson().encodePrettily());
+    }
+  }
+
 
   private Map<String, TemplateEngine> loadTemplateEngines() {
     return loadTemplateEngineFactories()
@@ -75,7 +129,7 @@ public class TemplateEngineKnot extends AbstractVerticle {
             .findFirst()
             .map(teEntry -> factory.create(vertx, teEntry.getConfig()))
             .map(teHandler -> Pair.of(factory.getName(), teHandler))
-            .<IllegalArgumentException>orElseThrow(IllegalArgumentException::new))
+            .orElseThrow(IllegalArgumentException::new))
         .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
   }
 
@@ -91,4 +145,6 @@ public class TemplateEngineKnot extends AbstractVerticle {
 
     return templateEngineFactories;
   }
+
+
 }

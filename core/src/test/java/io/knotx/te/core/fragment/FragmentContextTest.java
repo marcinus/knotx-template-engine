@@ -1,6 +1,5 @@
 package io.knotx.te.core.fragment;
 
-import io.knotx.engine.api.FragmentEvent;
 import io.knotx.fragment.Fragment;
 import io.vertx.core.json.JsonObject;
 import org.junit.jupiter.api.Assertions;
@@ -14,9 +13,8 @@ class FragmentContextTest {
     String expectedStrategy = "customStrategy";
     Fragment fragment = new Fragment("type", new JsonObject().put("te-strategy", expectedStrategy),
         "body");
-    FragmentEvent event = new FragmentEvent(fragment, null);
 
-    final FragmentContext fragmentContext = FragmentContext.from(event, "defaultStrategy");
+    final FragmentContext fragmentContext = FragmentContext.from(fragment, "defaultStrategy");
     Assertions.assertEquals(expectedStrategy, fragmentContext.strategy());
   }
 
@@ -24,9 +22,8 @@ class FragmentContextTest {
   void from_whenFragmentWithNoStrategy_expectDefaultStrategyApplied() {
     // given
     Fragment fragment = new Fragment("type", new JsonObject(), "body");
-    FragmentEvent event = new FragmentEvent(fragment, null);
 
-    final FragmentContext fragmentContext = FragmentContext.from(event, "defaultStrategy");
+    final FragmentContext fragmentContext = FragmentContext.from(fragment, "defaultStrategy");
     Assertions.assertEquals("defaultStrategy", fragmentContext.strategy());
   }
 
