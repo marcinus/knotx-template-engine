@@ -26,6 +26,12 @@ import java.util.List;
 @DataObject(generateConverter = true, publicConverter = false)
 public class TemplateEngineKnotOptions {
 
+  /**
+   * Default EB address of the verticle
+   */
+  public final static String DEFAULT_ADDRESS = "knotx.knot.te";
+
+  private String address;
   private String defaultEngine;
   private List<TemplateEngineEntry> engines;
 
@@ -42,6 +48,7 @@ public class TemplateEngineKnotOptions {
    * @param other the instance to copy
    */
   public TemplateEngineKnotOptions(TemplateEngineKnotOptions other) {
+    this.address = other.address;
     this.defaultEngine = other.defaultEngine;
     this.engines = other.engines;
   }
@@ -68,7 +75,26 @@ public class TemplateEngineKnotOptions {
   }
 
   private void init() {
+    address = DEFAULT_ADDRESS;
     engines = new ArrayList<>();
+  }
+
+  /**
+   * @return EB address
+   */
+  public String getAddress() {
+    return address;
+  }
+
+  /**
+   * Sets the EB address of the verticle. Default is `knotx.knot.te`
+   *
+   * @param address EB address of the verticle
+   * @return a reference to this, so the API can be used fluently
+   */
+  public TemplateEngineKnotOptions setAddress(String address) {
+    this.address = address;
+    return this;
   }
 
   /**

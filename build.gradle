@@ -53,7 +53,7 @@ subprojects { subproject ->
   }
 
   dependencies {
-    compile 'io.knotx:knotx-knot-engine-api'
+    compile 'io.knotx:knotx-fragments-handler-api'
 
     compile 'io.vertx:vertx-core'
     compile 'io.vertx:vertx-service-proxy'
