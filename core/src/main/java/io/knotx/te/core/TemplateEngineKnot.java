@@ -17,8 +17,8 @@ package io.knotx.te.core;
 
 import io.knotx.fragment.Fragment;
 import io.knotx.fragments.handler.api.Knot;
-import io.knotx.fragments.handler.api.exception.KnotProcessingFatalException;
-import io.knotx.fragments.handler.api.fragment.FragmentResult;
+import io.knotx.fragments.handler.api.domain.FragmentResult;
+import io.knotx.fragments.handler.api.exception.ActionFatalException;
 import io.knotx.te.api.TemplateEngine;
 import io.knotx.te.api.TemplateEngineFactory;
 import io.knotx.te.core.fragment.FragmentContext;
@@ -52,7 +52,7 @@ public class TemplateEngineKnot extends AbstractVerticle implements Knot {
   private Map<String, TemplateEngine> engines;
 
   @Override
-  public void apply(io.knotx.fragments.handler.api.fragment.FragmentContext fragmentContext,
+  public void apply(io.knotx.fragments.handler.api.domain.FragmentContext fragmentContext,
       Handler<AsyncResult<FragmentResult>> result) {
     Single.just(fragmentContext)
         .map(ctx -> FragmentContext.from(ctx.getFragment(), options.getDefaultEngine()))
@@ -105,13 +105,13 @@ public class TemplateEngineKnot extends AbstractVerticle implements Knot {
             fragment.setBody(templateEngine.process(fragment));
             return fragmentContext;
           } else {
-            throw new KnotProcessingFatalException(fragment);
+            throw new ActionFatalException(fragment);
           }
         });
   }
 
   private FragmentResult createSuccessResponse(FragmentContext fragmentContext) {
-    return new FragmentResult(fragmentContext.fragment(), FragmentResult.DEFAULT_TRANSITION);
+    return new FragmentResult(fragmentContext.fragment(), FragmentResult.SUCCESS_TRANSITION);
   }
 
   private void traceFragment(FragmentContext ctx) {

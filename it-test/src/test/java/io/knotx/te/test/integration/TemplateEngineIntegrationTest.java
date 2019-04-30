@@ -6,15 +6,14 @@ import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.knotx.fragment.Fragment;
-import io.knotx.fragments.handler.api.fragment.FragmentContext;
-import io.knotx.fragments.handler.api.fragment.FragmentResult;
+import io.knotx.fragments.handler.api.domain.FragmentContext;
+import io.knotx.fragments.handler.api.domain.FragmentResult;
 import io.knotx.fragments.handler.reactivex.api.Knot;
 import io.knotx.junit5.KnotxApplyConfiguration;
 import io.knotx.junit5.KnotxExtension;
 import io.knotx.junit5.util.FileReader;
 import io.knotx.junit5.util.RequestUtil;
 import io.knotx.server.api.context.ClientRequest;
-import io.knotx.te.core.TemplateEngineKnot;
 import io.knotx.te.core.TemplateEngineKnotOptions;
 import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
@@ -44,7 +43,7 @@ class TemplateEngineIntegrationTest {
           final String expectedMarkup = fileContentAsString("result/simple.txt");
           final String markup = fragmentResult.getFragment().getBody();
 
-          assertEquals(FragmentResult.DEFAULT_TRANSITION, fragmentResult.getTransition());
+          assertEquals(FragmentResult.SUCCESS_TRANSITION, fragmentResult.getTransition());
           assertThat(markup, equalToIgnoringWhiteSpace(expectedMarkup));
         });
   }
@@ -61,7 +60,7 @@ class TemplateEngineIntegrationTest {
           final String expectedMarkup = fileContentAsString("result/simple.txt");
           final String markup = fragmentResult.getFragment().getBody();
 
-          assertEquals(FragmentResult.DEFAULT_TRANSITION, fragmentResult.getTransition());
+          assertEquals(FragmentResult.SUCCESS_TRANSITION, fragmentResult.getTransition());
           assertThat(markup, equalToIgnoringWhiteSpace(expectedMarkup));
         });
   }
