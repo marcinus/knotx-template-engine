@@ -30,8 +30,10 @@ dependencies {
   compile project(':knotx-template-engine-api')
   compile("com.github.jknack:handlebars:$handlebarsVersion")
 
+  testCompile group: 'io.knotx', name: 'knotx-junit5', version: "${project.version}"
   testCompile 'org.mockito:mockito-core'
   testCompile 'org.mockito:mockito-junit-jupiter'
+
 }
 
 
