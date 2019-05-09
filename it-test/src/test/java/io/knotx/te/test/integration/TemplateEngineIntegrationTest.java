@@ -1,8 +1,7 @@
 package io.knotx.te.test.integration;
 
+import static io.knotx.junit5.assertions.KnotxAssertions.assertEqualsIgnoreWhitespace;
 import static io.knotx.junit5.util.RequestUtil.subscribeToResult_shouldSucceed;
-import static org.hamcrest.Matchers.equalToIgnoringWhiteSpace;
-import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.knotx.fragment.Fragment;
@@ -44,7 +43,7 @@ class TemplateEngineIntegrationTest {
           final String markup = fragmentResult.getFragment().getBody();
 
           assertEquals(FragmentResult.SUCCESS_TRANSITION, fragmentResult.getTransition());
-          assertThat(markup, equalToIgnoringWhiteSpace(expectedMarkup));
+          assertEqualsIgnoreWhitespace(expectedMarkup, markup);
         });
   }
 
@@ -61,7 +60,7 @@ class TemplateEngineIntegrationTest {
           final String markup = fragmentResult.getFragment().getBody();
 
           assertEquals(FragmentResult.SUCCESS_TRANSITION, fragmentResult.getTransition());
-          assertThat(markup, equalToIgnoringWhiteSpace(expectedMarkup));
+          assertEqualsIgnoreWhitespace(expectedMarkup, markup);
         });
   }
 
@@ -133,4 +132,5 @@ class TemplateEngineIntegrationTest {
     return new String(Files.readAllBytes(Paths.get(getClass().getClassLoader()
         .getResource(filePath).toURI())));
   }
+
 }

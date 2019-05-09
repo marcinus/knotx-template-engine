@@ -1,7 +1,6 @@
 package io.knotx.te.handlebars;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToIgnoringWhiteSpace;
+import static io.knotx.junit5.assertions.KnotxAssertions.assertEqualsIgnoreWhitespace;
 import static org.mockito.Mockito.when;
 
 import io.knotx.fragment.Fragment;
@@ -34,7 +33,7 @@ class HandlebarsTemplateEngineTest {
         "data/sampleContext.json");
     final String result = templateEngine.process(fragment).trim();
     final String expected = FileReader.readText("results/simple").trim();
-    assertThat(result, equalToIgnoringWhiteSpace(expected));
+    assertEqualsIgnoreWhitespace(expected, result);
   }
 
   @Test
@@ -46,7 +45,7 @@ class HandlebarsTemplateEngineTest {
         "data/sampleContext.json");
     final String result = templateEngine.process(fragment).trim();
     final String expected = FileReader.readText("results/customDelimiter").trim();
-    assertThat(result, equalToIgnoringWhiteSpace(expected));
+    assertEqualsIgnoreWhitespace(expected, result);
   }
 
   @Test
@@ -56,7 +55,7 @@ class HandlebarsTemplateEngineTest {
         "data/emptyContext.json");
     final String result = templateEngine.process(fragment).trim();
     final String expected = FileReader.readText("results/emptyContext").trim();
-    assertThat(result, equalToIgnoringWhiteSpace(expected));
+    assertEqualsIgnoreWhitespace(expected, result);
   }
 
   @Test
@@ -66,7 +65,7 @@ class HandlebarsTemplateEngineTest {
         "data/sampleContext.json");
     final String result = templateEngine.process(fragment).trim();
     final String expected = FileReader.readText("results/emptyContent").trim();
-    assertThat(result, equalToIgnoringWhiteSpace(expected));
+    assertEqualsIgnoreWhitespace(expected, result);
   }
 
   @Test
@@ -76,7 +75,7 @@ class HandlebarsTemplateEngineTest {
         "data/sampleContext.json");
     final String result = templateEngine.process(fragment).trim();
     final String expected = FileReader.readText("results/undefinedHelper").trim();
-    assertThat(result, equalToIgnoringWhiteSpace(expected));
+    assertEqualsIgnoreWhitespace(expected, result);
   }
 
   private Fragment mockFragmentFromFile(String bodyFilePath, String contextFilePath)
@@ -90,4 +89,5 @@ class HandlebarsTemplateEngineTest {
 
     return mockedFragment;
   }
+
 }

@@ -23,6 +23,7 @@ dependencies {
   compile project(':knotx-template-engine-core')
   compile project(':knotx-template-engine-handlebars')
 
+  testCompile group: 'io.knotx', name: 'knotx-junit5', version: "${project.version}"
   testCompile group: 'io.knotx', name: 'knotx-launcher', version: "${project.version}"
 }
 

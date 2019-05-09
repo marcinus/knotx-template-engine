@@ -15,8 +15,7 @@
  */
 package io.knotx.te.handlebars;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
@@ -47,7 +46,7 @@ class JsonObjectValueResolverTest {
         .build();
     String compiled = template.apply(context).trim();
 
-    assertThat(compiled, equalTo(expected));
+    assertEquals(expected, compiled);
   }
 
 
