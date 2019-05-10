@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Knot.x Project
+ * Copyright (C) 2019 Knot.x Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@ModuleGen(name = "knotx-te-api", groupPackage = "io.knotx")
-package io.knotx.te.api;
+rootProject.name = "knotx-template-engine"
 
-import io.vertx.codegen.annotations.ModuleGen;
+include("knotx-template-engine-api")
+include("knotx-template-engine-core")
+include("knotx-template-engine-handlebars")
+include("knotx-template-engine-it-test")
+
+project(":knotx-template-engine-api").projectDir = file("api")
+project(":knotx-template-engine-core").projectDir = file("core")
+project(":knotx-template-engine-handlebars").projectDir = file("handlebars")
+project(":knotx-template-engine-it-test").projectDir = file("it-test")

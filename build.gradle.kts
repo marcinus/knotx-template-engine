@@ -1,5 +1,8 @@
+import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.repositories
+
 /*
- * Copyright (C) 2018 Knot.x Project
+ * Copyright (C) 2019 Knot.x Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +17,21 @@
  * limitations under the License.
  */
 
-description = "Knot.x Template Engine API"
+plugins {
+  jacoco
+}
 
-compileJava.dependsOn annotationProcessing
+subprojects {
+  group = "io.knotx"
+
+  repositories {
+    jcenter()
+    mavenLocal()
+    maven { url = uri("https://plugins.gradle.org/m2/") }
+    maven { url = uri("https://oss.sonatype.org/content/groups/staging/") }
+    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
+  }
+}
+
+apply(from = "gradle/javaAndUnitTests.gradle.kts")
+apply(from = "gradle/jacoco.gradle.kts")
