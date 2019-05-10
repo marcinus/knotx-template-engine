@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.knotx.te.core.exception;
-
-/**
- * Thrown when template engine that is not registered is called.
- */
-public class UnsupportedEngineException extends RuntimeException {
-
-  public UnsupportedEngineException(String message) {
-    super(message);
-  }
+subprojects {
+    plugins.withId("jacoco") {
+        tasks.getByName<JacocoReport>("jacocoTestReport") {
+            reports {
+                sourceDirectories.from(fileTree("src/main/java"))
+                classDirectories.from(fileTree("build/classes") {
+                    exclude("**/*Options*")
+                })
+                xml.destination = File("$buildDir/reports/jacoco/report.xml")
+                html.isEnabled = true
+                xml.isEnabled = true
+                csv.isEnabled = false
+            }
+        }
+    }
 }

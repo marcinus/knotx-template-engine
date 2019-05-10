@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Knot.x Project
+ * Copyright (C) 2019 Knot.x Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-description = "Knot.x Template Engine Integration Tests"
-
-compileJava.dependsOn annotationProcessing
-
 dependencies {
-  compile project(':knotx-template-engine-api')
-  compile project(':knotx-template-engine-core')
-  compile project(':knotx-template-engine-handlebars')
+  "implementation"(platform("io.knotx:knotx-dependencies:${project.version}"))
+  "implementation"(group = "io.vertx", name = "vertx-core")
+  "implementation"(group = "io.vertx", name = "vertx-service-proxy")
+  "implementation"(group = "io.vertx", name = "vertx-rx-java2")
+  "implementation"(group = "io.vertx", name = "vertx-codegen")
 
-  testCompile group: 'io.knotx', name: 'knotx-junit5', version: "${project.version}"
-  testCompile group: 'io.knotx', name: 'knotx-launcher', version: "${project.version}"
-}
-
-sourceSets {
-  test {
-    resources {
-      srcDirs += ['../conf']
-    }
-  }
+  "testImplementation"("io.knotx:knotx-junit5")
+  "testImplementation"(group = "io.vertx", name = "vertx-junit5")
+  "testImplementation"(group = "io.vertx", name = "vertx-unit")
 }
