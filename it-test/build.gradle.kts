@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.version
-
 /*
  * Copyright (C) 2019 Knot.x Project
  *

@@ -13,12 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.gradle.api.JavaVersion
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.bundling.Jar
-import org.gradle.api.tasks.javadoc.Javadoc
-import org.gradle.external.javadoc.StandardJavadocDocletOptions
-import org.gradle.kotlin.dsl.*
 import org.nosphere.apache.rat.RatTask
 
 plugins {
