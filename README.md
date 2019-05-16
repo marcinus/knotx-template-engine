@@ -107,6 +107,10 @@ You can reconfigure an engine as follows in the handlebars engine entry section:
 ### How to configure?
 For all configuration fields and their defaults consult [HandlebarsEngineOptions](https://github.com/Knotx/knotx-template-engine/blob/master/handlebars/documentation/.dataobjects/core-dataobjects.adoc)
 
+### Handlebars helpers and features
+JKnack Handlebars port for java comes with [build-in helpers](https://github.com/jknack/handlebars.java#helpers) (note that you need to register some of them because they are not added by default).
+Also, there are helpers created by Knot.x community in the [Knot.x Handlebars Extension](https://github.com/Knotx/knotx-handlebars-extension) repository.
+
 ### Extending handlebars with custom helpers
 
 If the list of available handlebars helpers is not enough, you can easily extend it. To do this the 
