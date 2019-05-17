@@ -25,7 +25,7 @@ plugins {
 
 dependencies {
   api(project(":knotx-template-engine-api"))
-  api ("io.knotx:knotx-fragments-handler-api")
+  api ("io.knotx:knotx-fragments-handler-api:${project.version}")
 
   implementation("org.apache.commons:commons-lang3")
   testImplementation(group = "org.mockito", name = "mockito-core")
