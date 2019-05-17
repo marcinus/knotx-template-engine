@@ -95,8 +95,8 @@ publishing {
           }
         }
         scm {
-          connection.set("scm:git:git://github.com/Knotx/knotx-server-http.git")
-          developerConnection.set("scm:git:ssh://github.com:Knotx/knotx-server-http.git")
+          connection.set("scm:git:git://github.com/Knotx/knotx-template-engine.git")
+          developerConnection.set("scm:git:ssh://github.com:Knotx/knotx-template-engine.git")
           url.set("http://knotx.io")
         }
       }

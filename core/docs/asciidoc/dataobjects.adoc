@@ -15,10 +15,8 @@
 |[[config]]`@config`|`Json object`|+++
 Sets <code>io.knotx.te.api.TemplateEngine</code> implementation configuration.
 +++
-|[[name]]`@name`|`String`|+++
-Sets the template engine name that identifies this strategy. This name must be exactly
- the same as the TemplateEngineFactory returns. The name is later used in the Fragment Content
- to define which template engine should process it. Must be unique.
+|[[factory]]`@factory`|`String`|+++
+Sets the template engine factory name. This name would be used to get the <code>TemplateEngineFactory</code> that provides the Template Engine
 +++
 |===
 
@@ -37,13 +35,9 @@ Sets the template engine name that identifies this strategy. This name must be e
 |[[address]]`@address`|`String`|+++
 Sets the EB address of the Verticle. Default is <code>"knotx.knot.te"</code>.
 +++
-|[[defaultEngine]]`@defaultEngine`|`String`|+++
-Sets the default template engine name. This template engine will be used every time no strategy
- is defined in the Fragment Configuration.
-+++
-|[[engines]]`@engines`|`Array of link:dataobjects.html#TemplateEngineEntry[TemplateEngineEntry]`|+++
-List of the Template Engine Entries. Each item contains definition of new Template Engine
- strategy.
+|[[engine]]`@engine`|`link:dataobjects.html#TemplateEngineEntry[TemplateEngineEntry]`|+++
+Sets the template engine strategy for this Knot instance. This template engine will be used
+ every time Fragment is processed by this Knot.
 +++
 |===
 

@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.knotx.te.core.exception;
+package io.knotx.te.core;
 
-/**
- * Thrown when template engine that is not registered is called.
- */
-public class UnsupportedEngineException extends RuntimeException {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-  public UnsupportedEngineException(String factoryName) {
-    super("Can't find factory: " + factoryName + ".");
+class TemplateEngineKnotTest {
+
+  @Test
+  @DisplayName("Expect UnsupportedEngineException thrown when trying to instantiate TE with not existing TE factory")
+  void expectUnsupportedEngineException() {
+    //ToDo
   }
 }

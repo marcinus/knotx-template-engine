@@ -17,8 +17,6 @@ package io.knotx.te.core;
 
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Describes Template Engine configuration
@@ -26,48 +24,25 @@ import java.util.List;
 @DataObject(generateConverter = true, publicConverter = false)
 public class TemplateEngineKnotOptions {
 
-  /**
-   * Default EB address of the verticle
-   */
-  public final static String DEFAULT_ADDRESS = "knotx.knot.te";
+  public final static String DEFAULT_EB_ADDRESS = "knotx.knot.te";
 
   private String address;
-  private String defaultEngine;
-  private List<TemplateEngineEntry> engines;
+  private TemplateEngineEntry engine;
 
-  /**
-   * Default constructor
-   */
   public TemplateEngineKnotOptions() {
     init();
   }
 
-  /**
-   * Copy constructor
-   *
-   * @param other the instance to copy
-   */
   public TemplateEngineKnotOptions(TemplateEngineKnotOptions other) {
     this.address = other.address;
-    this.defaultEngine = other.defaultEngine;
-    this.engines = other.engines;
+    this.engine = other.engine;
   }
 
-  /**
-   * Create an settings from JSON
-   *
-   * @param json the JSON
-   */
   public TemplateEngineKnotOptions(JsonObject json) {
     init();
     TemplateEngineKnotOptionsConverter.fromJson(json, this);
   }
 
-  /**
-   * Convert to JSON
-   *
-   * @return the JSON
-   */
   public JsonObject toJson() {
     JsonObject json = new JsonObject();
     TemplateEngineKnotOptionsConverter.toJson(this, json);
@@ -75,8 +50,7 @@ public class TemplateEngineKnotOptions {
   }
 
   private void init() {
-    address = DEFAULT_ADDRESS;
-    engines = new ArrayList<>();
+    address = DEFAULT_EB_ADDRESS;
   }
 
   /**
@@ -98,40 +72,21 @@ public class TemplateEngineKnotOptions {
   }
 
   /**
-   * @return default template engine name
+   * @return template engine strategy
    */
-  public String getDefaultEngine() {
-    return defaultEngine;
+  public TemplateEngineEntry getEngine() {
+    return engine;
   }
 
   /**
-   * Sets the default template engine name. This template engine will be used every time no strategy
-   * is defined in the Fragment Configuration.
+   * Sets the template engine strategy for this Knot instance. This template engine will be used
+   * every time Fragment is processed by this Knot.
    *
-   * @param defaultEngine default engine name
+   * @param engine Template Engine strategy with configuration
    * @return a reference to this, so the API can be used fluently
    */
-  public TemplateEngineKnotOptions setDefaultEngine(String defaultEngine) {
-    this.defaultEngine = defaultEngine;
-    return this;
-  }
-
-  /**
-   * @return the list of configured template engines.
-   */
-  public List<TemplateEngineEntry> getEngines() {
-    return engines;
-  }
-
-  /**
-   * List of the Template Engine Entries. Each item contains definition of new Template Engine
-   * strategy.
-   *
-   * @param engines - list of engines.
-   * @return reference to this, so the API can be used fluently
-   */
-  public TemplateEngineKnotOptions setEngines(List<TemplateEngineEntry> engines) {
-    this.engines = engines;
+  public TemplateEngineKnotOptions setEngine(TemplateEngineEntry engine) {
+    this.engine = engine;
     return this;
   }
 }
