@@ -103,12 +103,12 @@ Now you may use it in Fragment's Tasks.
 Example configuration is available in the [conf](https://github.com/Knotx/knotx-template-engine/blob/master/conf)
 section of this module.
 
-## Handlebars TE Strategy
+## Handlebars Template Engine Strategy
 Currently this repository delivers `handlebars` TE strategy implementation.
-You may read more bout it in the [module docs](https://github.com/Knotx/knotx-template-engine/tree/master/handlebars)
+You may read more bout it in the [module docs](https://github.com/Knotx/knotx-template-engine/tree/master/handlebars).
 
-### How to create custom Template Engine strategy
-Read more about it in the [API module docs](https://github.com/Knotx/knotx-template-engine/tree/master/api)
+### How to create a custom Template Engine Strategy
+Read more about it in the [API module docs](https://github.com/Knotx/knotx-template-engine/tree/master/api).
 
 You can find example (and very simple) TE strategy implementation in the 
 [Knot.x example project - acme te](https://github.com/Knotx/knotx-example-project/tree/master/acme-template-engine).

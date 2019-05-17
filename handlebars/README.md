@@ -7,6 +7,9 @@ template engine used in Knot.x examples.
 Template Engine Handlebars uses 
 [Handlebars Java port](https://github.com/jknack/handlebars.java) to compile and evaluate templates.
 Please refer to its documentation for any details.
+Additionally, Knot.x Template Engine Handlebars have built-in Guava in-memory cache for compiled HBS
+Templates. It's key is computed basing on the `cacheKeyAlgorithm` defined in the configuration
+(the default is `MD5` of the Fragment's `body`).
 
 ## How to configure
 For all configuration fields and their defaults consult [HandlebarsEngineOptions](https://github.com/Knotx/knotx-template-engine/blob/master/handlebars/docs/asciidoc/dataobjects.adoc)

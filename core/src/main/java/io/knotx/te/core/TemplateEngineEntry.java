@@ -75,7 +75,7 @@ public class TemplateEngineEntry {
   }
 
   /**
-   * Sets {@link io.knotx.te.api.TemplateEngine} implementation configuration.
+   * Sets {@code io.knotx.te.api.TemplateEngine} implementation configuration.
    *
    * @param config handler JSON configuration
    * @return reference to this, so the API can be used fluently

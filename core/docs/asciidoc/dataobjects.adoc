@@ -13,7 +13,7 @@
 |===
 ^|Name | Type ^| Description
 |[[config]]`@config`|`Json object`|+++
-Sets link implementation configuration.
+Sets <code>io.knotx.te.api.TemplateEngine</code> implementation configuration.
 +++
 |[[name]]`@name`|`String`|+++
 Sets the template engine name that identifies this strategy. This name must be exactly
@@ -35,11 +35,11 @@ Sets the template engine name that identifies this strategy. This name must be e
 |===
 ^|Name | Type ^| Description
 |[[address]]`@address`|`String`|+++
-Sets the EB address of the verticle. Default is `knotx.knot.te`
+Sets the EB address of the Verticle. Default is <code>"knotx.knot.te"</code>.
 +++
 |[[defaultEngine]]`@defaultEngine`|`String`|+++
 Sets the default template engine name. This template engine will be used every time no strategy
- is defined in the Fragment Content.
+ is defined in the Fragment Configuration.
 +++
 |[[engines]]`@engines`|`Array of link:dataobjects.html#TemplateEngineEntry[TemplateEngineEntry]`|+++
 List of the Template Engine Entries. Each item contains definition of new Template Engine

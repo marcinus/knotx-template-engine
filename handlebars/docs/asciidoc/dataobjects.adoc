@@ -13,21 +13,22 @@
 |===
 ^|Name | Type ^| Description
 |[[cacheKeyAlgorithm]]`@cacheKeyAlgorithm`|`String`|+++
-Set the algorithm used to build a hash from the handlebars snippet.
- The hash is to be used as a cache key.
+Sets the algorithm used to build a hash from the handlebars snippet. The hash is to be used as
+ a cache key.
 
  The name should be a standard Java Security name (such as "SHA", "MD5", and so on).
 +++
 |[[cacheSize]]`@cacheSize`|`Number (Long)`|+++
-Set the size of the cache. After reaching the max size, new elements will replace the oldest one.
+Sets the size of the cache. After reaching the max size, new elements will replace the oldest
+ one.
 +++
 |[[endDelimiter]]`@endDelimiter`|`String`|+++
-Set the end delimiter for the Handlebars engine to recognize en of placeholders.
- By default, the Handlebars engine uses `}}` symbols as end delimiter.
+Sets the end delimiter for the Handlebars engine to recognize en of placeholders. By default,
+ the Handlebars engine uses `}}` symbols as end delimiter.
 +++
 |[[startDelimiter]]`@startDelimiter`|`String`|+++
-Set the start delimiter for the Handlebars engine to recognize start of placeholders.
- By default, the Handlebars engine uses `{{` symbols as start delimiter.
+Sets the start delimiter for the Handlebars engine to recognize start of placeholders. By
+ default, the Handlebars engine uses `{{` symbols as start delimiter.
 +++
 |===
 

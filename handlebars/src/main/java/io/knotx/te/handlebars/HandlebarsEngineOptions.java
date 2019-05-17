@@ -24,9 +24,6 @@ import io.vertx.core.json.JsonObject;
 @DataObject(generateConverter = true, publicConverter = false)
 public class HandlebarsEngineOptions {
 
-  /**
-   * Default key hash algorithm = MD5
-   */
   private static final String DEFAULT_CACHE_KEY_ALGORITHM = "MD5";
 
   private static final String DEFAULT_START_DELIMITER = "{{";
@@ -38,18 +35,10 @@ public class HandlebarsEngineOptions {
   private String startDelimiter;
   private String endDelimiter;
 
-  /**
-   * Default constructor
-   */
   public HandlebarsEngineOptions() {
     init();
   }
 
-  /**
-   * Copy constructor
-   *
-   * @param other the instance to copy
-   */
   public HandlebarsEngineOptions(HandlebarsEngineOptions other) {
     this.cacheKeyAlgorithm = other.cacheKeyAlgorithm;
     this.cacheSize = other.cacheSize;
@@ -57,21 +46,11 @@ public class HandlebarsEngineOptions {
     this.endDelimiter = other.endDelimiter;
   }
 
-  /**
-   * Create an settings from JSON
-   *
-   * @param json the JSON
-   */
   public HandlebarsEngineOptions(JsonObject json) {
     init();
     HandlebarsEngineOptionsConverter.fromJson(json, this);
   }
 
-  /**
-   * Convert to JSON
-   *
-   * @return the JSON
-   */
   public JsonObject toJson() {
     JsonObject json = new JsonObject();
     HandlebarsEngineOptionsConverter.toJson(this, json);
@@ -92,7 +71,8 @@ public class HandlebarsEngineOptions {
   }
 
   /**
-   * Set the size of the cache. After reaching the max size, new elements will replace the oldest one.
+   * Sets the size of the cache. After reaching the max size, new elements will replace the oldest
+   * one.
    *
    * @param cacheSize size of the cache
    * @return a reference to this, so the API can be used fluently
@@ -110,8 +90,8 @@ public class HandlebarsEngineOptions {
   }
 
   /**
-   * Set the algorithm used to build a hash from the handlebars snippet.
-   * The hash is to be used as a cache key.
+   * Sets the algorithm used to build a hash from the handlebars snippet. The hash is to be used as
+   * a cache key.
    *
    * The name should be a standard Java Security name (such as "SHA", "MD5", and so on).
    *
@@ -128,10 +108,11 @@ public class HandlebarsEngineOptions {
   }
 
   /**
-   * Set the start delimiter for the Handlebars engine to recognize start of placeholders.
-   * By default, the Handlebars engine uses `{{` symbols as start delimiter.
+   * Sets the start delimiter for the Handlebars engine to recognize start of placeholders. By
+   * default, the Handlebars engine uses `{{` symbols as start delimiter.
    *
-   * @param startDelimiter - the delimiter that will distinguish beginning of the handlebars expression
+   * @param startDelimiter - the delimiter that will distinguish beginning of the handlebars
+   * expression
    * @return a reference to this, so the API can be used fluently
    */
   public HandlebarsEngineOptions setStartDelimiter(String startDelimiter) {
@@ -144,8 +125,9 @@ public class HandlebarsEngineOptions {
   }
 
   /**
-   * Set the end delimiter for the Handlebars engine to recognize en of placeholders.
-   * By default, the Handlebars engine uses `}}` symbols as end delimiter.
+   * Sets the end delimiter for the Handlebars engine to recognize en of placeholders. By default,
+   * the Handlebars engine uses `}}` symbols as end delimiter.
+   *
    * @param endDelimiter - the delimiter that will distinguish end of the handlebars expression
    * @return a reference to this, so the API can be used fluently
    */
