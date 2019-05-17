@@ -28,6 +28,8 @@ dependencies {
   api ("io.knotx:knotx-fragments-handler-api")
 
   implementation("org.apache.commons:commons-lang3")
+  testImplementation(group = "org.mockito", name = "mockito-core")
+  testImplementation(group = "org.mockito", name = "mockito-junit-jupiter")
 }
 
 // -----------------------------------------------------------------------------

@@ -15,14 +15,29 @@
  */
 package io.knotx.te.core;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import io.knotx.fragment.Fragment;
+import io.knotx.te.api.TemplateEngine;
+import io.knotx.te.api.TemplateEngineFactory;
+import io.vertx.core.json.JsonObject;
+import io.vertx.reactivex.core.Vertx;
 
-class TemplateEngineKnotTest {
+public class DummyTemplateEngineFactory implements TemplateEngineFactory {
 
-  @Test
-  @DisplayName("Expect UnsupportedEngineException thrown when trying to instantiate TE with not existing TE factory")
-  void expectUnsupportedEngineException() {
-    //ToDo
+  @Override
+  public String getName() {
+    return "dummy";
+  }
+
+  @Override
+  public TemplateEngine create(Vertx vertx, JsonObject config) {
+    return new DummyTemplateEngine();
+  }
+
+  class DummyTemplateEngine implements TemplateEngine {
+
+    @Override
+    public String process(Fragment fragment) {
+      return "";
+    }
   }
 }

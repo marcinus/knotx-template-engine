@@ -20,8 +20,6 @@ import io.knotx.fragments.handler.api.Knot;
 import io.knotx.fragments.handler.api.domain.FragmentContext;
 import io.knotx.fragments.handler.api.domain.FragmentResult;
 import io.knotx.te.api.TemplateEngine;
-import io.knotx.te.api.TemplateEngineFactory;
-import io.knotx.te.core.exception.UnsupportedEngineException;
 import io.reactivex.Single;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
@@ -34,10 +32,6 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.reactivex.core.AbstractVerticle;
 import io.vertx.serviceproxy.ServiceBinder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ServiceLoader;
-import java.util.stream.Collectors;
 
 public class TemplateEngineKnot extends AbstractVerticle implements Knot {
 
@@ -82,7 +76,7 @@ public class TemplateEngineKnot extends AbstractVerticle implements Knot {
 
     //register the service proxy on event bus
     serviceBinder = new ServiceBinder(getVertx());
-    templateEngine = loadTemplateEngine();
+    templateEngine = new TemplateEngineProvider(vertx).loadTemplateEngine(options.getEngine());
 
     consumer = serviceBinder.setAddress(options.getAddress()).register(Knot.class, this);
   }
@@ -105,28 +99,4 @@ public class TemplateEngineKnot extends AbstractVerticle implements Knot {
   private Fragment processFragment(Fragment fragment) {
     return fragment.setBody(templateEngine.process(fragment));
   }
-
-  private TemplateEngine loadTemplateEngine() {
-    return loadTemplateEngineFactories()
-        .stream()
-        .filter(factory -> factory.getName().equals(options.getEngine().getFactory()))
-        .findFirst()
-        .map(factory -> factory.create(vertx, options.getEngine().getConfig()))
-        .orElseThrow(() -> new UnsupportedEngineException(options.getEngine().getFactory()));
-  }
-
-  private List<TemplateEngineFactory> loadTemplateEngineFactories() {
-    List<TemplateEngineFactory> templateEngineFactories = new ArrayList<>();
-    ServiceLoader.load(TemplateEngineFactory.class)
-        .iterator()
-        .forEachRemaining(templateEngineFactories::add);
-
-    LOGGER.info("Template Engines [{}] registered.",
-        templateEngineFactories.stream().map(TemplateEngineFactory::getName).collect(Collectors
-            .joining(",")));
-
-    return templateEngineFactories;
-  }
-
-
 }
