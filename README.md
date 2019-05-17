@@ -1,29 +1,29 @@
-# Knotx Template Engine Knot
-Knotx Template Engine is module responsible for processing template and the data using chosen
+# Template Engine
+Knot.x Template Engine module is a [Knot](https://github.com/Knotx/knotx-fragments-handler/tree/master/api#knot)
+responsible for processing [Fragment's](https://github.com/Knotx/knotx-fragment-api#knotx-fragment-api)
+`body` (treating it as a Template) and the data from Fragment's `payload` using chosen
 template engine strategy.
 
-## How does it work?
-Template Engine filters [Fragments](https://github.com/Cognifide/knotx/wiki/Splitter) containing 
-`te` in the `knots` attribute. Then for each Fragment it merges Fragment Content (snippet) 
-with data from Fragment Context (for example data from external services or form submission response)
-using chosen template engine strategy.
+## How does it work
+Template Engine reads [Fragment's](https://github.com/Knotx/knotx-fragment-api#knotx-fragment-api)
+`body` and treats it as a Template. It also reads Fragment's `payload` and uses the data within it
+to resolve placeholders from the Template. Finally it overwrites Fragment's `body` and returns it
+in the [`FragmentResult`](https://github.com/Knotx/knotx-fragments-handler/blob/master/api/docs/asciidoc/dataobjects.adoc#FragmentResult)
+together with Transition.
 
 > Please note that example below uses Handlebars to process the markup. Read more about it below.
+> You may read about it in the [Handlebars module docs](https://github.com/Knotx/knotx-template-engine/tree/master/handlebars)
 
-*Fragment Content*
+*Fragment's body*
 ```html
-<knotx:snippet knots="databridge,te"
-        databridge-name="books"
-        type="text/knotx-snippet">
   <div class="col-md-4">
     <h2>{{_result.title}}</h2>
     <p>{{_result.synopsis.short}}</p>
     <div>Success! Status code: {{_response.statusCode}}</div>
   </div>
-</knotx:snippet>
 ```
 
-*Fragment Context*
+*Fragment's payload*
 ```json
 {
   "_result": {
@@ -38,7 +38,7 @@ using chosen template engine strategy.
 }
 ```
 
-Template Engine Knot uses data from Fragment Context and applies it to Fragment Content:
+*Fragment's body after processing*
 ```html
 <div class="col-md-4">
   <h2>Knot.x in Action</h2>
@@ -46,7 +46,6 @@ Template Engine Knot uses data from Fragment Context and applies it to Fragment 
   <div>Success! Status code: 200</div>
 </div>
 ```
-Finally Fragment Content is replaced with merged result.
 
 ### Template Engine Strategy
 
@@ -57,92 +56,59 @@ snippet e.g.:
 <knotx:snippet knots="te"
                te-strategy="acme"
                type="text/knotx-snippet">
-  Some markup that te strategy can process...
+  Some markup that acme strategy can process...
 </knotx:snippet>
 ```
 
 Template Engine configuration enables to define `defaultEngine` that will be applied to each snippet
 when no `te-strategy` is defined.
 
-### Configuration
-See the [configuration docs](https://github.com/Knotx/knotx-template-engine/blob/master/core/documentation/.dataobjects/core-dataobjects.adoc).
+## How to use
+> Please note that example below uses Handlebars to process the markup. Read more about it below.
+> You may read about it in the [Handlebars module docs](https://github.com/Knotx/knotx-template-engine/tree/master/handlebars)
 
-Example configuration is available in the [conf](https://github.com/Knotx/knotx-template-engine/blob/master/conf/includes/templateEngine.conf)
+Define a module that creates `io.knotx.te.core.TemplateEngineKnot` instance.
+
+```hocon
+modules {
+  myTemplateEngine = "io.knotx.te.core.TemplateEngineKnot"
+}
+```
+
+Configure it to listen on some `address` and other things:
+```hocon
+config.myTemplateEngine {
+  address = my.template.engine.eventbus.address
+  defaultEngine = handlebars
+}
+```
+See the [configuration docs](https://github.com/Knotx/knotx-template-engine/blob/master/core/docs/asciidoc/dataobjects.adoc)
+for detailed configuration options.
+
+In the [Fragment's Handler actions section](https://github.com/Knotx/knotx-fragments-handler/tree/master/core#actions) 
+define a Template Engine Knot Action using `knot` factory.
+```hocon
+actions {
+  te-hbs {
+    factory = "knot"
+    config {
+      address = "my.template.engine.eventbus.address"
+    }
+  }
+}
+```
+
+Now you may use it in Fragment's Tasks.
+
+Example configuration is available in the [conf](https://github.com/Knotx/knotx-template-engine/blob/master/conf)
 section of this module.
 
 ## Handlebars TE Strategy
-This section describes Handlebars template engine strategy that is default implementation of the
-template engine used in Knot.x examples. It uses 
-[Handlebars Java port](https://github.com/jknack/handlebars.java) to compile and evaluate templates.
+Currently this repository delivers `handlebars` TE strategy implementation.
+You may read more bout it in the [module docs](https://github.com/Knotx/knotx-template-engine/tree/master/handlebars)
 
-### Configuration
-#### Interpolation symbol
-By default, the Handlebars engine uses `{{` and `}}` symbols as tag delimiters.
-However, while Knot.x can be used to generate markup on the server side, the very same page might 
-also contain templates intended for client-side processing. 
-This is often the case when frameworks like Angular.js or Vue.js are used.
-To avoid conflicts between Mustache templates to be executed server-side and ones evaluated 
-on the client side, a Knot.x Handlebars TE introduces two configuration parameters that enable 
-you to configure custom symbols to be used in Knot.x snippets.
+### How to create custom Template Engine strategy
+Read more about it in the [API module docs](https://github.com/Knotx/knotx-template-engine/tree/master/api)
 
-E.g.:
-In order to use different symbols as below
-```html
-<div class="col-md-4">
-  <h2>Snippet1 - {<_result.message>}</h2>
-</div>
-```
-You can reconfigure an engine as follows in the handlebars engine entry section:
-```hocon
-  {
-    name = handlebars
-    config = {
-      cacheSize = 1000
-      startDelimiter = "{["
-      endDelimiter = "]}"
-    }
-  }
-```
-
-### How to configure?
-For all configuration fields and their defaults consult [HandlebarsEngineOptions](https://github.com/Knotx/knotx-template-engine/blob/master/handlebars/documentation/.dataobjects/core-dataobjects.adoc)
-
-### Handlebars helpers and features
-JKnack Handlebars port for java comes with [build-in helpers](https://github.com/jknack/handlebars.java#helpers) (note that you need to register some of them because they are not added by default).
-Also, there are helpers created by Knot.x community in the [Knot.x Handlebars Extension](https://github.com/Knotx/knotx-handlebars-extension) repository.
-
-### Extending handlebars with custom helpers
-
-If the list of available handlebars helpers is not enough, you can easily extend it. To do this the 
-following actions should be undertaken:
-
-1. Use `io.knotx:knotx-template-engine-handlebars` module as dependency
-2. Create a class implementing [`io.knotx.te.handlebars.CustomHandlebarsHelper`](https://github.com/Knotx/knotx-template-engine/blob/master/handlebars/src/main/java/io/knotx/te/handlebars/CustomHandlebarsHelper.java) interface. 
-This interface extends [com.github.jknack.handlebars.Helper](https://jknack.github.io/handlebars.java/helpers.html)
-3. Register the implementation as a service in the JAR file containing the implementation
-    * Create a configuration file called `META-INF/services/io.knotx.te.handlebars.CustomHandlebarsHelper` 
-    in the same project as your implementation class
-    * Paste a fully qualified name of the implementation class inside the configuration file. If you're 
-    providing multiple helpers in a single JAR, you can list them in new lines (one name per line is allowed) 
-    * Make sure the configuration file is part of the JAR file containing the implementation class(es)
-3. Run Knot.x with the JAR file in the classpath
-
-#### Example extension
-
-See [acme-handlebars-ext](https://github.com/Knotx/knotx-example-project/tree/master/acme-handlebars-ext)
-in the [`knotx-example-project`](https://github.com/Knotx/knotx-example-project).
-
-This module contains an example custom Handlebars helper - `BoldHelper`.
-
-## How to create custom Template Engine strategy?
-All you need to do is simply implement 2 interfaces from the `knotx-template-engine-api`: 
-- [`TemplateEngineFactory`](https://github.com/Knotx/knotx-template-engine/blob/master/api/src/main/java/io/knotx/te/api/TemplateEngineFactory.java)
-- [`TemplateEngine`](https://github.com/Knotx/knotx-template-engine/blob/master/api/src/main/java/io/knotx/te/api/TemplateEngine.java).
-
-and declare `META-INF/services/io.knotx.te.api.TemplateEngineFactory` on the classpath with your 
-`TemplateEngineFactory` implementation.
-
-`handlebars` module in this repo is an example of such implementation.
-You can find another example example in the 
+You can find example (and very simple) TE strategy implementation in the 
 [Knot.x example project - acme te](https://github.com/Knotx/knotx-example-project/tree/master/acme-template-engine).
-
