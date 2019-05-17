@@ -29,7 +29,7 @@ dependencies {
   implementation(group = "com.google.guava", name = "guava")
   implementation(group = "com.github.jknack", name= "handlebars", version = "4.0.6")
 
-  testImplementation("io.knotx:knotx-junit5")
+  testImplementation("io.knotx:knotx-junit5:${project.version}")
   testImplementation(group = "org.mockito", name = "mockito-core")
   testImplementation(group = "org.mockito", name = "mockito-junit-jupiter")
 }

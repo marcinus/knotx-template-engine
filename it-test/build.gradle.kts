@@ -27,8 +27,8 @@ dependencies {
   implementation(project(":knotx-template-engine-core"))
   implementation(project(":knotx-template-engine-handlebars"))
 
-  testImplementation("io.knotx:knotx-junit5")
-  testImplementation("io.knotx:knotx-launcher")
+  testImplementation("io.knotx:knotx-junit5:${project.version}")
+  testImplementation("io.knotx:knotx-launcher:${project.version}")
 }
 
 sourceSets.named("test") {
