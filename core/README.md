@@ -46,7 +46,7 @@ actions {
   te-custom {
     factory = knot
     config {
-      address = "my.template.engine.eventbus.address"
+      address = my.template.engine.eventbus.address
     }
   }
   te-hbs {
