@@ -33,7 +33,7 @@ In order to use different symbols as below
 You can reconfigure an engine as follows in the handlebars engine entry section:
 ```hocon
   {
-    name = handlebars
+    factory = handlebars
     config = {
       cacheSize = 1000
       startDelimiter = "{["

@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 @DataObject(generateConverter = true, publicConverter = false)
 public class TemplateEngineEntry {
 
-  private String name;
+  private String factory;
   private JsonObject config;
 
   /**
@@ -37,7 +37,7 @@ public class TemplateEngineEntry {
   public TemplateEngineEntry(JsonObject json) {
     init();
     TemplateEngineEntryConverter.fromJson(json, this);
-    if (StringUtils.isBlank(name)) {
+    if (StringUtils.isBlank(factory)) {
       throw new IllegalStateException("Engine name in engines configuration can not be null!");
     }
   }
@@ -49,20 +49,19 @@ public class TemplateEngineEntry {
   /**
    * @return {@link io.knotx.te.api.TemplateEngineFactory} name
    */
-  public String getName() {
-    return name;
+  public String getFactory() {
+    return factory;
   }
 
   /**
-   * Sets the template engine name that identifies this strategy. This name must be exactly
-   * the same as the TemplateEngineFactory returns. The name is later used in the Fragment Content
-   * to define which template engine should process it. Must be unique.
+   * Sets the template engine factory name. This name would be used to get the {@code
+   * TemplateEngineFactory} that provides the Template Engine
    *
-   * @param name handler factory name
+   * @param factory template factory name
    * @return reference to this, so the API can be used fluently
    */
-  public TemplateEngineEntry setName(String name) {
-    this.name = name;
+  public TemplateEngineEntry setFactory(String factory) {
+    this.factory = factory;
     return this;
   }
 
@@ -83,5 +82,13 @@ public class TemplateEngineEntry {
   public TemplateEngineEntry setConfig(JsonObject config) {
     this.config = config;
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return "TemplateEngineEntry{" +
+        "factory='" + factory + '\'' +
+        ", config=" + config +
+        '}';
   }
 }

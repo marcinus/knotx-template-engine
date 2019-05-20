@@ -47,25 +47,10 @@ together with Transition.
 </div>
 ```
 
-### Template Engine Strategy
-
-Each snippet can specify one template engine strategy by defining `te-strategy` attribute in the
-snippet e.g.:
-
-```html
-<knotx:snippet knots="te"
-               te-strategy="acme"
-               type="text/knotx-snippet">
-  Some markup that acme strategy can process...
-</knotx:snippet>
-```
-
-Template Engine configuration enables to define `defaultEngine` that will be applied to each snippet
-when no `te-strategy` is defined.
-
 ## How to use
 > Please note that example below uses Handlebars to process the markup. Read more about it below.
 > You may read about it in the [Handlebars module docs](https://github.com/Knotx/knotx-template-engine/tree/master/handlebars)
+> If you want to use another template engine, please refer to [core module docs](https://github.com/Knotx/knotx-template-engine/tree/master/core).
 
 Define a module that creates `io.knotx.te.core.TemplateEngineKnot` instance.
 
@@ -79,7 +64,7 @@ Configure it to listen on some `address` and other things:
 ```hocon
 config.myTemplateEngine {
   address = my.template.engine.eventbus.address
-  defaultEngine = handlebars
+  factory = handlebars
 }
 ```
 See the [configuration docs](https://github.com/Knotx/knotx-template-engine/blob/master/core/docs/asciidoc/dataobjects.adoc)
@@ -90,9 +75,9 @@ define a Template Engine Knot Action using `knot` factory.
 ```hocon
 actions {
   te-hbs {
-    factory = "knot"
+    factory = knot
     config {
-      address = "my.template.engine.eventbus.address"
+      address = my.template.engine.eventbus.address
     }
   }
 }

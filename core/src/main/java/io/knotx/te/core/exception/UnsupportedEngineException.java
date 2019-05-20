@@ -20,7 +20,7 @@ package io.knotx.te.core.exception;
  */
 public class UnsupportedEngineException extends RuntimeException {
 
-  public UnsupportedEngineException(String message) {
-    super(message);
+  public UnsupportedEngineException(String factoryName) {
+    super("Can't find factory: " + factoryName + ".");
   }
 }

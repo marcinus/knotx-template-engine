@@ -26,7 +26,6 @@ import io.knotx.fragments.handler.reactivex.api.Knot;
 import io.knotx.junit5.KnotxApplyConfiguration;
 import io.knotx.junit5.KnotxExtension;
 import io.knotx.junit5.util.FileReader;
-import io.knotx.junit5.util.RequestUtil;
 import io.knotx.server.api.context.ClientRequest;
 import io.knotx.te.core.TemplateEngineKnotOptions;
 import io.reactivex.Single;
@@ -47,11 +46,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class TemplateEngineIntegrationTest {
 
   @Test
-  @DisplayName("Expect merged snippet template and dynamic data, when using default te")
+  @DisplayName("Expect merged snippet template and dynamic data using handlebars")
   @KnotxApplyConfiguration("templateEngineStack.conf")
-  void callDefaultTe(VertxTestContext context, Vertx vertx)
-      throws IOException {
-
+  void callHandlebars(VertxTestContext context, Vertx vertx) throws IOException {
     callWithAssertions(context, vertx, "snippet/simple-handlebars.txt", "data/simple.json",
         fragmentResult -> {
           final String expectedMarkup = fileContentAsString("result/simple.txt");
@@ -60,84 +57,30 @@ class TemplateEngineIntegrationTest {
           assertEquals(FragmentResult.SUCCESS_TRANSITION, fragmentResult.getTransition());
           assertEqualsIgnoreWhitespace(expectedMarkup, markup);
         });
-  }
-
-  @Test
-  @DisplayName("Expect merged snippet template and dynamic data, when using te strategy")
-  @KnotxApplyConfiguration("templateEngineStack.conf")
-  void callHandlebars(VertxTestContext context, Vertx vertx)
-      throws IOException {
-
-    callWithAssertions(context, vertx, "snippet/simple-handlebars.txt", "data/simple.json",
-        "handlebars",
-        fragmentResult -> {
-          final String expectedMarkup = fileContentAsString("result/simple.txt");
-          final String markup = fragmentResult.getFragment().getBody();
-
-          assertEquals(FragmentResult.SUCCESS_TRANSITION, fragmentResult.getTransition());
-          assertEqualsIgnoreWhitespace(expectedMarkup, markup);
-        });
-  }
-
-  @Test
-  @DisplayName("Expect failed processing when non existing te called")
-  @KnotxApplyConfiguration("templateEngineStack.conf")
-  void callNonExistingEngine(VertxTestContext context, Vertx vertx)
-      throws IOException {
-
-    expectFailureWithAssertions(context, vertx, "snippet/simple-handlebars.txt", "data/simple.json",
-        "non-existing",
-        error -> {
-        });
-  }
-
-  private void expectFailureWithAssertions(VertxTestContext context, Vertx vertx,
-      String bodyPath, String payloadPath, String teStrategy,
-      Consumer<Throwable> error) throws IOException {
-    FragmentContext message = payloadMessage(bodyPath, payloadPath, teStrategy);
-    Knot service = Knot.createProxy(vertx, TemplateEngineKnotOptions.DEFAULT_ADDRESS);
-    Single<FragmentResult> fragmentResult = service.rxApply(message);
-    RequestUtil.subscribeToResult_shouldFail(context, fragmentResult, error);
   }
 
   private void callWithAssertions(VertxTestContext context, Vertx vertx,
-      String bodyPath, String payloadPath, String teStrategy,
-      Consumer<FragmentResult> onSuccess) throws IOException {
-    FragmentContext message = payloadMessage(bodyPath, payloadPath, teStrategy);
+      String bodyPath, String payloadPath, Consumer<FragmentResult> onSuccess) throws IOException {
+    FragmentContext message = payloadMessage(bodyPath, payloadPath);
     rxProcessWithAssertions(context, vertx, onSuccess, message);
-  }
-
-  private void callWithAssertions(VertxTestContext context, Vertx vertx,
-      String bodyPath, String payloadPath, Consumer<FragmentResult> onSuccess)
-      throws IOException {
-    callWithAssertions(context, vertx, bodyPath, payloadPath, null, onSuccess);
   }
 
   private void rxProcessWithAssertions(VertxTestContext context, Vertx vertx,
       Consumer<FragmentResult> onSuccess, FragmentContext payload) {
-    Knot service = Knot.createProxy(vertx, TemplateEngineKnotOptions.DEFAULT_ADDRESS);
+    Knot service = Knot.createProxy(vertx, TemplateEngineKnotOptions.DEFAULT_EB_ADDRESS);
     Single<FragmentResult> fragmentResult = service.rxApply(payload);
 
     subscribeToResult_shouldSucceed(context, fragmentResult, onSuccess);
   }
 
-  private FragmentContext payloadMessage(String bodyPath, String payloadPath, String teStrategy)
-      throws IOException {
-    return new FragmentContext(fromJsonFiles(bodyPath, payloadPath, teStrategy),
-        new ClientRequest());
+  private FragmentContext payloadMessage(String bodyPath, String payloadPath) throws IOException {
+    return new FragmentContext(fromJsonFiles(bodyPath, payloadPath), new ClientRequest());
   }
 
-  private Fragment fromJsonFiles(String bodyPath, String payloadPath, String teStrategy)
-      throws IOException {
+  private Fragment fromJsonFiles(String bodyPath, String payloadPath) throws IOException {
     final String body = FileReader.readText(bodyPath);
     final String payload = FileReader.readText(payloadPath);
-
-    final JsonObject configuration = new JsonObject();
-    if (teStrategy != null) {
-      configuration.put("te-strategy", teStrategy);
-
-    }
-    final Fragment fragment = new Fragment("snippet", configuration, body);
+    final Fragment fragment = new Fragment("snippet", new JsonObject(), body);
     fragment.mergeInPayload(
         new JsonObject(Collections.singletonMap("_result", new JsonObject(payload))));
     return fragment;

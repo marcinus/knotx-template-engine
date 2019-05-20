@@ -17,11 +17,9 @@ package io.knotx.te.core;
 
 import io.knotx.fragment.Fragment;
 import io.knotx.fragments.handler.api.Knot;
+import io.knotx.fragments.handler.api.domain.FragmentContext;
 import io.knotx.fragments.handler.api.domain.FragmentResult;
-import io.knotx.fragments.handler.api.exception.ActionFatalException;
 import io.knotx.te.api.TemplateEngine;
-import io.knotx.te.api.TemplateEngineFactory;
-import io.knotx.te.core.fragment.FragmentContext;
 import io.reactivex.Single;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
@@ -34,12 +32,6 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.reactivex.core.AbstractVerticle;
 import io.vertx.serviceproxy.ServiceBinder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.stream.Collectors;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class TemplateEngineKnot extends AbstractVerticle implements Knot {
 
@@ -49,16 +41,16 @@ public class TemplateEngineKnot extends AbstractVerticle implements Knot {
   private ServiceBinder serviceBinder;
 
   private TemplateEngineKnotOptions options;
-  private Map<String, TemplateEngine> engines;
+  private TemplateEngine templateEngine;
 
   @Override
   public void apply(io.knotx.fragments.handler.api.domain.FragmentContext fragmentContext,
       Handler<AsyncResult<FragmentResult>> result) {
     Single.just(fragmentContext)
-        .map(ctx -> FragmentContext.from(ctx.getFragment(), options.getDefaultEngine()))
+        .map(FragmentContext::getFragment)
         .doOnSuccess(this::traceFragment)
-        .flatMap(this::processFragment)
-        .map(this::createSuccessResponse)
+        .map(this::processFragment)
+        .map(this::handleSuccessProcessing)
         .subscribe(
             fragmentResult -> {
               LOGGER.debug("Processing ends with result [{}]", fragmentResult);
@@ -76,7 +68,6 @@ public class TemplateEngineKnot extends AbstractVerticle implements Knot {
   public void init(Vertx vertx, Context context) {
     super.init(vertx, context);
     this.options = new TemplateEngineKnotOptions(config());
-
   }
 
   @Override
@@ -85,7 +76,7 @@ public class TemplateEngineKnot extends AbstractVerticle implements Knot {
 
     //register the service proxy on event bus
     serviceBinder = new ServiceBinder(getVertx());
-    engines = loadTemplateEngines();
+    templateEngine = new TemplateEngineProvider(vertx).loadTemplateEngine(options.getEngine());
 
     consumer = serviceBinder.setAddress(options.getAddress()).register(Knot.class, this);
   }
@@ -95,56 +86,17 @@ public class TemplateEngineKnot extends AbstractVerticle implements Knot {
     serviceBinder.unregister(consumer);
   }
 
-  private Single<FragmentContext> processFragment(FragmentContext fc) {
-    return Single.just(fc)
-        .map(fragmentContext -> {
-          final TemplateEngine templateEngine = engines
-              .get(fragmentContext.strategy());
-          Fragment fragment = fragmentContext.fragment();
-          if (templateEngine != null) {
-            fragment.setBody(templateEngine.process(fragment));
-            return fragmentContext;
-          } else {
-            throw new ActionFatalException(fragment);
-          }
-        });
+  private FragmentResult handleSuccessProcessing(Fragment fragment) {
+    return new FragmentResult(fragment, FragmentResult.SUCCESS_TRANSITION);
   }
 
-  private FragmentResult createSuccessResponse(FragmentContext fragmentContext) {
-    return new FragmentResult(fragmentContext.fragment(), FragmentResult.SUCCESS_TRANSITION);
-  }
-
-  private void traceFragment(FragmentContext ctx) {
+  private void traceFragment(Fragment fragment) {
     if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace("Processing fragment {}", ctx.fragment().toJson().encodePrettily());
+      LOGGER.trace("Processing fragment {}", fragment.toJson().encodePrettily());
     }
   }
 
-
-  private Map<String, TemplateEngine> loadTemplateEngines() {
-    return loadTemplateEngineFactories()
-        .stream()
-        .map(factory -> options.getEngines().stream()
-            .filter(teEntry -> factory.getName().equals(teEntry.getName()))
-            .findFirst()
-            .map(teEntry -> factory.create(vertx, teEntry.getConfig()))
-            .map(teHandler -> Pair.of(factory.getName(), teHandler))
-            .orElseThrow(IllegalArgumentException::new))
-        .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+  private Fragment processFragment(Fragment fragment) {
+    return fragment.setBody(templateEngine.process(fragment));
   }
-
-  private List<TemplateEngineFactory> loadTemplateEngineFactories() {
-    List<TemplateEngineFactory> templateEngineFactories = new ArrayList<>();
-    ServiceLoader.load(TemplateEngineFactory.class)
-        .iterator()
-        .forEachRemaining(templateEngineFactories::add);
-
-    LOGGER.info("Template Engines [{}] registered.",
-        templateEngineFactories.stream().map(TemplateEngineFactory::getName).collect(Collectors
-            .joining(",")));
-
-    return templateEngineFactories;
-  }
-
-
 }
