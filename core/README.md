@@ -44,7 +44,7 @@ define a separate Action for each TE Knot:
 ```hocon
 actions {
   te-custom {
-    factory = "knot"
+    factory = knot
     config {
       address = "my.template.engine.eventbus.address"
     }
