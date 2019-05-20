@@ -52,7 +52,7 @@ actions {
   te-hbs {
     factory = knot
     config {
-      address = "io.knotx.te.handlebars"
+      address = io.knotx.te.handlebars
     }
   }
 }
