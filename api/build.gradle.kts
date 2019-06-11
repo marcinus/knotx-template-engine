@@ -103,7 +103,13 @@ publishing {
     }
   }
 }
+val subProjectPath = this.path
 signing {
+  setRequired({
+    gradle.taskGraph.hasTask("$subProjectPath:publish") ||
+            gradle.taskGraph.hasTask("$subProjectPath:publishMavenJavaPublicationToMavenRepository")
+  })
+
   sign(publishing.publications["mavenJava"])
 }
 
