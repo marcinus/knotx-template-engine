@@ -15,7 +15,7 @@
  */
 package io.knotx.te.core;
 
-import io.knotx.fragment.Fragment;
+import io.knotx.fragments.api.Fragment;
 import io.knotx.te.api.TemplateEngine;
 import io.knotx.te.api.TemplateEngineFactory;
 import io.vertx.core.json.JsonObject;

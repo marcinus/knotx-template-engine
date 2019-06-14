@@ -20,7 +20,7 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import io.knotx.fragment.Fragment;
+import io.knotx.fragments.api.Fragment;
 import io.knotx.te.api.TemplateEngine;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;

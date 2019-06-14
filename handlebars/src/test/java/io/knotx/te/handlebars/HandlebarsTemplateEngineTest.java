@@ -18,7 +18,7 @@ package io.knotx.te.handlebars;
 import static io.knotx.junit5.assertions.KnotxAssertions.assertEqualsIgnoreWhitespace;
 import static org.mockito.Mockito.when;
 
-import io.knotx.fragment.Fragment;
+import io.knotx.fragments.api.Fragment;
 import io.knotx.junit5.util.FileReader;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.Vertx;
