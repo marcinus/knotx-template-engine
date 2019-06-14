@@ -1,11 +1,11 @@
 # Template Engine
 Knot.x Template Engine module is a [Knot](https://github.com/Knotx/knotx-fragments-handler/tree/master/api#knot)
-responsible for processing [Fragment's](https://github.com/Knotx/knotx-fragment-api#knotx-fragment-api)
+responsible for processing [Fragment's](https://github.com/Knotx/knotx-fragments-handler/tree/master/api#knotx-fragment-api)
 `body` (treating it as a Template) and the data from Fragment's `payload` using chosen
 template engine strategy.
 
 ## How does it work
-Template Engine reads [Fragment's](https://github.com/Knotx/knotx-fragment-api#knotx-fragment-api)
+Template Engine reads [Fragment's](https://github.com/Knotx/knotx-fragments-handler/tree/master/api#knotx-fragment-api)
 `body` and treats it as a Template. It also reads Fragment's `payload` and uses the data within it
 to resolve placeholders from the Template. Finally it overwrites Fragment's `body` and returns it
 in the [`FragmentResult`](https://github.com/Knotx/knotx-fragments-handler/blob/master/api/docs/asciidoc/dataobjects.adoc#FragmentResult)
