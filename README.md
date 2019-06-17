@@ -1,14 +1,14 @@
 # Template Engine
-Knot.x Template Engine module is a [Knot](https://github.com/Knotx/knotx-fragments-handler/tree/master/api#knot)
-responsible for processing [Fragment's](https://github.com/Knotx/knotx-fragment-api#knotx-fragment-api)
+Knot.x Template Engine module is a [Knot](https://github.com/Knotx/knotx-fragments/tree/master/api#knot)
+responsible for processing [Fragment's](https://github.com/Knotx/knotx-fragments/tree/master/api#knotx-fragment-api)
 `body` (treating it as a Template) and the data from Fragment's `payload` using chosen
 template engine strategy.
 
 ## How does it work
-Template Engine reads [Fragment's](https://github.com/Knotx/knotx-fragment-api#knotx-fragment-api)
+Template Engine reads [Fragment's](https://github.com/Knotx/knotx-fragments/tree/master/api#knotx-fragment-api)
 `body` and treats it as a Template. It also reads Fragment's `payload` and uses the data within it
 to resolve placeholders from the Template. Finally it overwrites Fragment's `body` and returns it
-in the [`FragmentResult`](https://github.com/Knotx/knotx-fragments-handler/blob/master/api/docs/asciidoc/dataobjects.adoc#FragmentResult)
+in the [`FragmentResult`](https://github.com/Knotx/knotx-fragments/blob/master/handler/api/docs/asciidoc/dataobjects.adoc#FragmentResult)
 together with Transition.
 
 > Please note that example below uses Handlebars to process the markup. Read more about it below.
@@ -70,7 +70,7 @@ config.myTemplateEngine {
 See the [configuration docs](https://github.com/Knotx/knotx-template-engine/blob/master/core/docs/asciidoc/dataobjects.adoc)
 for detailed configuration options.
 
-In the [Fragment's Handler actions section](https://github.com/Knotx/knotx-fragments-handler/tree/master/core#actions) 
+In the [Fragment's Handler actions section](https://github.com/Knotx/knotx-fragments/tree/master/handler/core#actions) 
 define a Template Engine Knot Action using `knot` factory.
 ```hocon
 actions {

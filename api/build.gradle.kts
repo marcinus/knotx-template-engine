@@ -24,7 +24,7 @@ plugins {
 }
 
 dependencies {
-  api("io.knotx:knotx-fragment-api:${project.version}")
+  api("io.knotx:knotx-fragments-api:${project.version}")
 }
 
 // -----------------------------------------------------------------------------

@@ -19,7 +19,7 @@ import static io.knotx.junit5.assertions.KnotxAssertions.assertEqualsIgnoreWhite
 import static io.knotx.junit5.util.RequestUtil.subscribeToResult_shouldSucceed;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.knotx.fragment.Fragment;
+import io.knotx.fragments.api.Fragment;
 import io.knotx.fragments.handler.api.domain.FragmentContext;
 import io.knotx.fragments.handler.api.domain.FragmentResult;
 import io.knotx.fragments.handler.reactivex.api.Knot;

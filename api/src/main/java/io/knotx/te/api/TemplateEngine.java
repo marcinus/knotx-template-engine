@@ -15,7 +15,7 @@
  */
 package io.knotx.te.api;
 
-import io.knotx.fragment.Fragment;
+import io.knotx.fragments.api.Fragment;
 
 /**
  * Represents template engine that process fragments in order to merge dynamic data with template.
