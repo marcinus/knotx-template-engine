@@ -26,10 +26,16 @@ plugins {
 }
 
 dependencies {
+  implementation(platform("io.knotx:knotx-dependencies:${project.version}"))
+
   api(project(":knotx-template-engine-api"))
   api ("io.knotx:knotx-fragments-handler-api:${project.version}")
 
+  implementation(group = "io.vertx", name = "vertx-core")
+  implementation(group = "io.vertx", name = "vertx-service-proxy")
+  implementation(group = "io.vertx", name = "vertx-rx-java2")
   implementation("org.apache.commons:commons-lang3")
+  
   testImplementation(group = "org.mockito", name = "mockito-core")
   testImplementation(group = "org.mockito", name = "mockito-junit-jupiter")
 }
@@ -47,5 +53,3 @@ tasks {
   }
   getByName("build").dependsOn("rat")
 }
-
-apply(from = "../gradle/common.deps.gradle.kts")

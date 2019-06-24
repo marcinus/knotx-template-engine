@@ -25,7 +25,11 @@ plugins {
 }
 
 dependencies {
+  implementation(platform("io.knotx:knotx-dependencies:${project.version}"))
   api("io.knotx:knotx-fragments-api:${project.version}")
+  
+  implementation(group = "io.vertx", name = "vertx-core")
+  implementation(group = "io.vertx", name = "vertx-rx-java2")
 }
 
 tasks {
@@ -34,5 +38,3 @@ tasks {
   }
   getByName("build").dependsOn("rat")
 }
-
-apply(from = "../gradle/common.deps.gradle.kts")

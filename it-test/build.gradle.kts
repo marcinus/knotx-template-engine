@@ -26,6 +26,8 @@ plugins {
 description = "Knot.x Template Engine Integration Tests"
 
 dependencies {
+  implementation(platform("io.knotx:knotx-dependencies:${project.version}"))
+
   implementation(project(":knotx-template-engine-api"))
   implementation(project(":knotx-template-engine-core"))
   implementation(project(":knotx-template-engine-handlebars"))
@@ -44,5 +46,3 @@ tasks {
   }
   getByName("build").dependsOn("rat")
 }
-
-apply(from = "../gradle/common.deps.gradle.kts")
