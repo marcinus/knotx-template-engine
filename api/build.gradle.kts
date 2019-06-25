@@ -38,3 +38,13 @@ tasks {
   }
   getByName("build").dependsOn("rat")
 }
+
+publishing {
+  publications {
+    withType(MavenPublication::class) {
+      from(components["java"])
+      artifact(tasks["sourcesJar"])
+      artifact(tasks["javadocJar"])
+    }
+  }
+}

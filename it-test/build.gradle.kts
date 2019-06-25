@@ -26,13 +26,12 @@ plugins {
 description = "Knot.x Template Engine Integration Tests"
 
 dependencies {
-  implementation(platform("io.knotx:knotx-dependencies:${project.version}"))
+  testImplementation(platform("io.knotx:knotx-dependencies:${project.version}"))
 
-  implementation(project(":knotx-template-engine-api"))
-  implementation(project(":knotx-template-engine-core"))
-  implementation(project(":knotx-template-engine-handlebars"))
+  testImplementation(project(":knotx-template-engine-api"))
+  testImplementation(project(":knotx-template-engine-core"))
+  testImplementation(project(":knotx-template-engine-handlebars"))
 
-  testImplementation("io.knotx:knotx-junit5:${project.version}")
   testImplementation("io.knotx:knotx-launcher:${project.version}")
 }
 

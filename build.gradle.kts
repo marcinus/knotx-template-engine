@@ -15,11 +15,11 @@
  */
 
 plugins {
+  java
   id("io.knotx.publish-all-composite") version "0.1.0"
-  id("io.knotx.unit-test") version "0.1.0"
 }
 
-subprojects {
+allprojects {
   group = "io.knotx"
   repositories {
     jcenter()
