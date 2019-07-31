@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/knotx/Knotx/_apis/build/status/Knotx.knotx-template-engine?branchName=master)](https://dev.azure.com/knotx/Knotx/_build/latest?definitionId=12&branchName=master)
+
 # Template Engine
 Knot.x Template Engine module is a [Knot](https://github.com/Knotx/knotx-fragments/tree/master/api#knot)
 responsible for processing [Fragment's](https://github.com/Knotx/knotx-fragments/tree/master/api#knotx-fragment-api)
