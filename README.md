@@ -96,6 +96,3 @@ You may read more bout it in the [module docs](https://github.com/Knotx/knotx-te
 
 ### How to create a custom Template Engine Strategy
 Read more about it in the [API module docs](https://github.com/Knotx/knotx-template-engine/tree/master/api).
-
-You can find example (and very simple) TE strategy implementation in the 
-[Knot.x example project - acme te](https://github.com/Knotx/knotx-example-project/tree/master/acme-template-engine).
