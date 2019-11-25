@@ -7,7 +7,7 @@ List of changes that are finished but not yet released in any final version.
 
 
 ## 2.0.0
-No major changes
+Adjust to new repository structure.
 
 ## 1.5.0
 Initial open source release.
