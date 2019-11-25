@@ -33,7 +33,7 @@ dependencies {
   implementation(group = "io.vertx", name = "vertx-service-proxy")
   implementation(group = "io.vertx", name = "vertx-rx-java2")
   implementation(group = "com.google.guava", name = "guava")
-  implementation(group = "com.github.jknack", name= "handlebars", version = "4.0.6")
+  implementation(group = "com.github.jknack", name= "handlebars", version = "4.1.2")
 
   testImplementation("io.knotx:knotx-junit5:${project.version}")
   testImplementation(group = "org.mockito", name = "mockito-core")
