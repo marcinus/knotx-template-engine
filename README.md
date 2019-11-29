@@ -1,4 +1,6 @@
 [![Build Status](https://dev.azure.com/knotx/Knotx/_apis/build/status/Knotx.knotx-template-engine?branchName=master)](https://dev.azure.com/knotx/Knotx/_build/latest?definitionId=12&branchName=master)
+[![CodeFactor](https://www.codefactor.io/repository/github/knotx/knotx-template-engine/badge)](https://www.codefactor.io/repository/github/knotx/knotx-template-engine)
+[![codecov](https://codecov.io/gh/Knotx/knotx-template-engine/branch/master/graph/badge.svg)](https://codecov.io/gh/Knotx/knotx-template-engine)
 
 # Template Engine
 Knot.x Template Engine module is a [Knot](https://github.com/Knotx/knotx-fragments/tree/master/api#knot)
