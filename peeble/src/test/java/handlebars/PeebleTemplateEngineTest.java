@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-rootProject.name = "knotx-template-engine"
+package handlebars;
 
-include("knotx-template-engine-api")
-include("knotx-template-engine-core")
-include("knotx-template-engine-handlebars")
-include("knotx-template-engine-it-test")
-include("knotx-template-engine-peeble")
+import io.vertx.reactivex.core.Vertx;
 
-project(":knotx-template-engine-api").projectDir = file("api")
-project(":knotx-template-engine-core").projectDir = file("core")
-project(":knotx-template-engine-handlebars").projectDir = file("handlebars")
-project(":knotx-template-engine-peeble").projectDir = file("peeble")
-project(":knotx-template-engine-it-test").projectDir = file("it-test")
+class PeebleTemplateEngineTest {
+
+  /**
+   * null, HandlebarsTemplateEngine does not use Vert.x
+   */
+  private Vertx vertx;
+
+  void setUp() {
+
+  }
+
+}
