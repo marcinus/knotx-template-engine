@@ -1,3 +1,4 @@
+package io.knotx.te.pebble;
 /*
  * Copyright (C) 2019 Knot.x Project
  *
@@ -13,16 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-rootProject.name = "knotx-template-engine"
 
-include("knotx-template-engine-api")
-include("knotx-template-engine-core")
-include("knotx-template-engine-handlebars")
-include("knotx-template-engine-it-test")
-include("knotx-template-engine-pebble")
+import io.knotx.te.api.TemplateEngine;
+import io.knotx.te.api.TemplateEngineFactory;
+import io.vertx.core.json.JsonObject;
+import io.vertx.reactivex.core.Vertx;
 
-project(":knotx-template-engine-api").projectDir = file("api")
-project(":knotx-template-engine-core").projectDir = file("core")
-project(":knotx-template-engine-handlebars").projectDir = file("handlebars")
-project(":knotx-template-engine-pebble").projectDir = file("pebble")
-project(":knotx-template-engine-it-test").projectDir = file("it-test")
+public class PebbleTemplateEngineFactory implements TemplateEngineFactory {
+
+  @Override
+  public String getName() {
+    return "handlebars";
+  }
+
+  @Override
+  public TemplateEngine create(Vertx vertx, JsonObject config) {
+    return new PebbleTemplateEngine(vertx, new PebbleEngineOptions(config));
+  }
+}
